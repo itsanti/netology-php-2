@@ -6,7 +6,7 @@ $email = 'aleksandr@netology.loc';
 $city  = 'Санкт-Петербург';
 $info  = 'начинающий PHP-разработчк';
 ?>
-<!DOCTYPE>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <title><?= $name; ?> | netology</title>
@@ -18,7 +18,7 @@ $info  = 'начинающий PHP-разработчк';
 </head>
 <body class="container">
     <div class="page-header text-center">
-        <h1>Страница пользователя <code><?= $name; ?></code></h1>
+        <h1>Страница пользователя <samp><?= $name; ?></samp></h1>
     </div>
     <div class="row">
         <dl class="panel panel-success col-lg-2">
