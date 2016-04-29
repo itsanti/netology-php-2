@@ -6,3 +6,6 @@ Repository for "netology php-2" course homeworks.
 
 ### 1.2 «Основы PHP»
 Реализовать алгоритм угадывания числа. `/hw/guess/index.php`
+
+### 1.3 «Строки, массивы и объекты»
+Работа с массивами. `/hw/regions/index.php`
