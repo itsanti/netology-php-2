@@ -9,3 +9,6 @@ Repository for "netology php-2" course homeworks.
 
 ### 1.3 «Строки, массивы и объекты»
 Работа с массивами. `/hw/regions/index.php`
+
+### 2.1 «Установка и настройка веб-сервера»
+Работа с CSV. `/hw/regions/index.php`
