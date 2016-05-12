@@ -11,7 +11,10 @@ Repository for "netology php-2" course homeworks.
 Работа с массивами. `/hw/regions/index.php`
 
 ### 1.4 «Стандартные функции»
-Простая галерея. `/hw/gallery/`
+Простая галерея. `/hw/gallery/index.php`
 
 ### 2.1 «Установка и настройка веб-сервера»
 Работа с CSV. `/hw/regions/index.php`
+
+### 2.2 «Обработка форм»
+Генератор тестов на PHP и JSON. `/hw/testgen/index.php`
