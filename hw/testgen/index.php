@@ -13,7 +13,6 @@
     <ul class="nav nav-pills nav-stacked">
         <li><a href="admin.php">загрузить JSON файл c тестом</a></li>
         <li><a href="list.php">список загруженных тестов</a></li>
-        <li><a href="test.php">перейти к тесту</a></li>
     </ul>
 </body>
 </html>

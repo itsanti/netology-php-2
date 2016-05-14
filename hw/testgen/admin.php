@@ -12,6 +12,8 @@ if (array_key_exists('uptest', $_FILES)) {
         $error = '<p class="text-danger">Допускаются файлы с расширением <strong>json</strong>.</p>';
     } elseif (!mimeCheck($file['tmp_name'], 'text/plain')) {
         $error = '<p class="text-danger">Вы пытаетесь загрузить не JSON.</p>';
+    } elseif (!formatCheck($file['tmp_name'])) {
+        $error = '<p class="text-danger">Неверный формат теста.</p>';
     } else {
         $newName = __DIR__ . '/uploads/test_' . time() . '.json';
         if (!move_uploaded_file($file['tmp_name'], $newName)) {
@@ -24,12 +26,37 @@ if (array_key_exists('uptest', $_FILES)) {
 }
 
 /**
+ * Функция проверяет формат теста.
+ *
+ * @param string $fileName путь к файлу
+ *
+ * @return bool в правильном формате json или нет
+ */
+function formatCheck($fileName) {
+    $json = file_get_contents($fileName);
+    $json = json_decode($json, true);
+
+    if (!is_null($json)) {
+        if (isset($json[0])) {
+            $needKeys = ['id', 'q', 'a'];
+            foreach ( $json as $test ) {
+                if (count(array_intersect_key(array_flip($needKeys), $test)) !== count($needKeys)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * Функция проверяет расширение файла.
  *
  * @param string $fileName путь к файлу
  * @param array $ext разрешенные расширения файла
  *
- * @return bool
+ * @return bool соответствует ли расширение разрешенному
  */
 function extCheck($fileName, $ext) {
     return in_array(pathinfo($fileName, PATHINFO_EXTENSION), $ext);
@@ -84,5 +111,21 @@ function mimeCheck($fileName, $mime)
         </div>
         <button type="submit" class="btn btn-success">загрузить тест</button>
     </form>
+    <div>
+        <h2>Формат теста</h2>
+        <pre>
+            [
+                {
+                    // int уникальный номер теста в файле
+                    "id": 1,
+                    // string вопрос
+                    "q": "2 + 2",
+                    // string | int  ответ
+                    "a": 4
+                }
+                [, { ... }, ...]
+            ]
+        </pre>
+    </div>
 </body>
 </html>
