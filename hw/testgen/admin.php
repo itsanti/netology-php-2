@@ -19,7 +19,8 @@ if (array_key_exists('uptest', $_FILES)) {
         if (!move_uploaded_file($file['tmp_name'], $newName)) {
             $error = '<p class="text-danger">Что-то пошло не так. Попробуйте позже.</p>';
         } else {
-            $error = '<p class="text-success">Файл успешно загружен на сервер.</p>';
+            header('Location: list.php?ok', true, 303);
+            exit;
         }
     }
 

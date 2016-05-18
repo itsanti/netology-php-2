@@ -2,6 +2,12 @@
 
 error_reporting(E_ALL);
 
+$msg = null;
+
+if (isset($_GET['ok'])) {
+    $msg = '<p class="text-success">Файл успешно загружен на сервер.</p>';
+}
+
 /**
  * Функция импортирует данные о тестах
  *
@@ -91,6 +97,13 @@ function xssafe($data, $encoding='UTF-8')
         <li><a href="test.php">test</a></li>
     </ul>
 </nav>
+<?php if(isset($msg)): ?>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <?php echo $msg; ?>
+    </div>
+</div>
+<?php endif; ?>
 <section>
     <?php
         echo renderTests(importTests());

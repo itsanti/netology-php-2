@@ -17,14 +17,24 @@ if (isset($_GET['ts']) and isset($_GET['id'])) {
             $answer    = mb_convert_case(xssafe(trim($_POST['a'])), MB_CASE_LOWER, 'UTF-8');
             $test['a'] = mb_convert_case(xssafe(trim($test['a'])), MB_CASE_LOWER, 'UTF-8');
             if ($answer === $test['a']) {
+
+                $name = xssafe(trim($_POST['n']));
+                $name = base64_encode($name);
+                $src = "sertificate.php?name={$name}";
+
                 $answer  = "<p class=\"text-success\">Ваш ответ <kbd>{$answer}</kbd> правильный.<br>";
                 $answer .= 'Попробуйте ответить на <a href="list.php">другой вопрос</a>.</p>';
+                $answer .= "<p>Ваш сертификат (нажмите, чтобы открыть в отдельном окне)<br><a href=\"{$src}\" target=\"_blank\">";
+                $answer .= '<img class="img-thumbnail" src="'. $src .'" width="200" height="150"></a></p>';
             } else {
                 $answer  = "<p class=\"text-danger\">Ваш ответ <kbd>{$answer}</kbd> неверный.";
                 $answer .= " Попробуйте еще раз.</p>";
             }
         }
         $content = renderTest($test, $ts, $id);
+    } else {
+        http_response_code(404);
+        $content = '<p>Такого теста не существует. Перейдите на страницу со <a href="list.php">списком тестов</a>.</p>';
     }
 }
 
@@ -65,10 +75,23 @@ function getTest($ts, $id)
 function renderTest($test, $ts, $id)
 {
     $test['q'] = trim(xssafe($test['q']));
+    $n = '';
+
+    if (isset($_POST['n'])) {
+        $n = trim(xssafe($_POST['n']));
+    }
 
     $html  = '<h1>Ответьте на вопрос</h1>';
     $html .=<<<HTML
 <form action="test.php?ts=$ts&id=$id" method="post">
+    <div class="form-group">
+        <label for="a" class="bg-success">Ваше имя для сертификата</label>
+        <div class="row">
+            <div class="col-xs-3">
+                <input class="form-control input-sm" type="text" id="n" name="n" required placeholder="Имя Фамилия" value="$n">
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <label for="a" class="well">{$test['q']}</label>
         <div class="row">

@@ -18,3 +18,6 @@ Repository for "netology php-2" course homeworks.
 
 ### 2.2 «Обработка форм»
 Генератор тестов на PHP и JSON. `/hw/testgen/index.php`
+
+### 2.3 «PHP и HTTP»
+Доработка `/hw/testgen/`. Генерация сертификата, работа с HTTP.
