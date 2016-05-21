@@ -2,11 +2,14 @@
 
 error_reporting(E_ALL);
 
-$name = '%username%';
+session_start();
 
-if (!empty($_GET['name'])) {
-    $name = base64_decode($_GET['name']);
+if (empty($_SESSION['login'])) {
+    header('HTTP/1.0 403 Forbidden');
+    exit(1);
 }
+
+$name = $_SESSION['name'];
 
 $font = realpath(__DIR__ . '/fonts/DejaVuSans.ttf');
 $fontName = realpath(__DIR__ . '/fonts/CaslonRoman.ttf');

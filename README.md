@@ -21,3 +21,6 @@ Repository for "netology php-2" course homeworks.
 
 ### 2.3 «PHP и HTTP»
 Доработка `/hw/testgen/`. Генерация сертификата, работа с HTTP.
+
+### 2.4 «Куки, сессии и авторизация»
+Доработка `/hw/testgen/`. Аутентификация и авторизация.

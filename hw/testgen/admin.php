@@ -2,7 +2,17 @@
 
 error_reporting(E_ALL);
 
-if (array_key_exists('uptest', $_FILES)) {
+session_start();
+
+$isAdmin = false;
+
+if (empty($_SESSION['isAdmin'])) {
+    http_response_code(403);
+} else {
+    $isAdmin = $_SESSION['isAdmin'];
+}
+
+if (array_key_exists('uptest', $_FILES) and $isAdmin) {
 
     $file  = $_FILES['uptest'];
 
@@ -104,6 +114,7 @@ function mimeCheck($fileName, $mime)
             </div>
         </div>
     <?php endif; ?>
+    <?php if ($isAdmin): ?>
     <form action="admin.php" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="uptest">JSON файл с тестом</label>
@@ -128,5 +139,8 @@ function mimeCheck($fileName, $mime)
             ]
         </pre>
     </div>
+    <?php else: ?>
+        <p>У вас нет доступа к администрированию тестов.</p>
+    <?php endif; ?>
 </body>
 </html>

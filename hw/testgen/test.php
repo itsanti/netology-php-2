@@ -2,10 +2,19 @@
 
 error_reporting(E_ALL);
 
-$content = '<p>Тест не выбран. Вернитесь на страницу со <a href="list.php">списком тестов</a>.</p>';
-$answer  = null;
+session_start();
 
-if (isset($_GET['ts']) and isset($_GET['id'])) {
+$login = false;
+
+if (empty($_SESSION['login'])) {
+    $content = '<p><a href="index.php">Войдите</a> в систему, чтобы пройти тест.</p>';
+} else {
+    $login = $_SESSION['login'];
+    $content = '<p>Тест не выбран. Вернитесь на страницу со <a href="list.php">списком тестов</a>.</p>';
+    $answer  = null;
+}
+
+if (isset($_GET['ts']) and isset($_GET['id']) and $login) {
 
     $ts = intval($_GET['ts']);
     $id = intval($_GET['id']);
@@ -17,10 +26,8 @@ if (isset($_GET['ts']) and isset($_GET['id'])) {
             $answer    = mb_convert_case(xssafe(trim($_POST['a'])), MB_CASE_LOWER, 'UTF-8');
             $test['a'] = mb_convert_case(xssafe(trim($test['a'])), MB_CASE_LOWER, 'UTF-8');
             if ($answer === $test['a']) {
-
-                $name = xssafe(trim($_POST['n']));
-                $name = base64_encode($name);
-                $src = "sertificate.php?name={$name}";
+             
+                $src = "sertificate.php";
 
                 $answer  = "<p class=\"text-success\">Ваш ответ <kbd>{$answer}</kbd> правильный.<br>";
                 $answer .= 'Попробуйте ответить на <a href="list.php">другой вопрос</a>.</p>';
@@ -75,23 +82,10 @@ function getTest($ts, $id)
 function renderTest($test, $ts, $id)
 {
     $test['q'] = trim(xssafe($test['q']));
-    $n = '';
-
-    if (isset($_POST['n'])) {
-        $n = trim(xssafe($_POST['n']));
-    }
 
     $html  = '<h1>Ответьте на вопрос</h1>';
     $html .=<<<HTML
 <form action="test.php?ts=$ts&id=$id" method="post">
-    <div class="form-group">
-        <label for="a" class="bg-success">Ваше имя для сертификата</label>
-        <div class="row">
-            <div class="col-xs-3">
-                <input class="form-control input-sm" type="text" id="n" name="n" required placeholder="Имя Фамилия" value="$n">
-            </div>
-        </div>
-    </div>
     <div class="form-group">
         <label for="a" class="well">{$test['q']}</label>
         <div class="row">
