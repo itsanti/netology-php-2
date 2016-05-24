@@ -6,27 +6,36 @@ namespace App\Http;
 class Request {
 
     public function getRequestTarget() {
-        // $requestTarget == '/index.php'
-        return __FUNCTION__;
+        return $_SERVER['REQUEST_URI'];
     }
 
     public function getMethod() {
-        // $method == 'GET'
-        return __FUNCTION__;
+        return $_SERVER['REQUEST_METHOD'];
     }
 
-    public function getHeader( $string ) {
-        // $header == 'application/x-www-form-urlencoded'
-        return __FUNCTION__;
+    public function getHeader($name) {
+        $headers = getallheaders();
+        if (array_key_exists($name, $headers)) {
+            return $headers[$name];
+        }
+        return '';
     }
 
     public function getHeaders() {
-        // array('Content-Type' => 'application/x-www-form-urlencoded')
-        return __FUNCTION__;
+        return getallheaders();
     }
 
     public function getBody() {
-        // $body == array('test' => 'value', 'submit' => 'Отправить')
-        return __FUNCTION__;
+        switch ($this->getMethod())
+        {
+            case 'GET':
+                return $_GET;
+            break;
+            case 'POST':
+                return $_POST + $_GET;
+            break;
+            default:
+                return [];
+        }
     }
 }

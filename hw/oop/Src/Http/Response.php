@@ -4,15 +4,20 @@ namespace App\Http;
 
 
 class Response {
-    
-    private $content;
-    private $headers = [];
-    private $tplvars = [];
 
-    public function setHeader($name, $value) {
+    private $body;
+    private $headers = [];
+    
+    public function setHeader($name, $value, $status = null) {
+        
         $this->headers[$name] = $value;
         $header = $name . ': ' . $value;
-        header($header);
+        
+        if (!is_null($status)) {
+            header($header, true, $status);
+        } else {
+            header($header);
+        }
     }
 
     public function getHeader($name) {
@@ -29,59 +34,16 @@ class Response {
         return $this->headers;
     }
 
-    public function setBody($html) {
-        $this->content = $html;
+    public function setBody($content) {
+        $this->body = $content;
     }
 
-    public function getBody($layout = 'index.html') {
+    public function getBody($render = null) {
 
-        if (!$layout) {
-            return $this->content;
+        if (!is_null($render)) {
+            return $render->render();
         }
 
-        // обязательная переменная шаблона
-        $this->tplvars[$layout]['content'] = $this->content;
-
-        $data = $this->getLayout($layout);
-
-        if (!is_null($data['content']) && !is_null($data['placeholders'])) {
-            foreach ($data['placeholders'] as $placeholder) {
-                if (array_key_exists($placeholder, $this->tplvars[$layout])) {
-                    $data['content'] = str_replace("{{{$placeholder}}}", $this->tplvars[$layout][$placeholder], $data['content']);
-                } else {
-                    $data['content'] = str_replace("{{{$placeholder}}}", '', $data['content']);
-                }
-            }
-            return $data['content'];
-        }
-
-        return $this->content;
-    }
-    
-    public function setTplVars($vars, $layout = 'index.html')
-    {
-        $this->tplvars[$layout] = $vars;
-    }
-
-    private function getLayout($name)
-    {
-        $placeholders = null;
-        $content = null;
-
-        $file = ROOT . '/Src/Templates/' . $name;
-        if (is_readable($file)) {
-            $content = file_get_contents($file);
-        }
-
-        preg_match_all('~{{(.+?)}}~', $content, $matches);
-
-        if (!empty($matches[1])) {
-            $placeholders = $matches[1];
-        }
-
-        return [
-            'placeholders' => $placeholders,
-            'content' => $content
-        ];
+        return $this->body;
     }
 }
