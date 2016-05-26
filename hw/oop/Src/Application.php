@@ -36,7 +36,8 @@ class Application
     {
         if($request->getMethod() === 'POST') {
             Session::saveData('data', $request->getBody());
-            $response->setHeader("Location", $request->getRequestTarget(), 303);
+            $response->setHeader("Location", $request->getRequestTarget());
+            $response->sendHeaders(303);
             exit;
         }
 
@@ -50,7 +51,7 @@ class Application
         }
 
         $render = new Html\Render($formVars, 'form.html');
-        $response->setBody($render->render());
+        $response->setBody($render->render(true));
         unset($render);
 
         $render = new Html\Render([

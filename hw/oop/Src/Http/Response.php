@@ -8,16 +8,8 @@ class Response {
     private $body;
     private $headers = [];
     
-    public function setHeader($name, $value, $status = null) {
-        
+    public function setHeader($name, $value) {
         $this->headers[$name] = $value;
-        $header = $name . ': ' . $value;
-        
-        if (!is_null($status)) {
-            header($header, true, $status);
-        } else {
-            header($header);
-        }
     }
 
     public function getHeader($name) {
@@ -32,6 +24,20 @@ class Response {
 
     public function getHeaders() {
         return $this->headers;
+    }
+    
+    public function sendHeaders($status = null) {
+        
+        $header = '';
+        
+        foreach ($this->headers as $name => $value) {
+            $header = $name . ': ' . $value;
+            header($header);
+        }
+        
+        if (!is_null($status)) {
+            http_response_code($status);
+        }
     }
 
     public function setBody($content) {

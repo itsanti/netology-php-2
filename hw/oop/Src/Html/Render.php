@@ -23,14 +23,18 @@ class Render {
         $this->tplvars[$this->layout] = $vars;
     }
     
-    public function render()
+    public function render($xssafe = false)
     {
         $data = $this->getLayout($this->layout);
 
         if (!is_null($data['placeholders'])) {
             foreach ($data['placeholders'] as $placeholder) {
                 if (array_key_exists($placeholder, $this->tplvars[$this->layout])) {
-                    $data['content'] = str_replace("{{{$placeholder}}}", $this->tplvars[$this->layout][$placeholder], $data['content']);
+                    $var = $this->tplvars[$this->layout][$placeholder];
+                    if ($xssafe) {
+                        $var = $this->xssafe($var);
+                    }
+                    $data['content'] = str_replace("{{{$placeholder}}}", $this->prepareVar($var), $data['content']);
                 } else {
                     $data['content'] = str_replace("{{{$placeholder}}}", '', $data['content']);
                 }
@@ -61,5 +65,15 @@ class Render {
             'placeholders' => $placeholders,
             'content' => $content
         ];
+    }
+    
+    private function prepareVar($var)
+    {
+        return str_replace(['{', '}'], ['&#x7B;', '&#x7D;'], $var);
+    }
+    
+    private function xssafe($data, $encoding='UTF-8')
+    {
+        return htmlspecialchars($data, ENT_QUOTES | ENT_HTML401, $encoding);
     }
 }
