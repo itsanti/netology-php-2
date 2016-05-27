@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-xs-3">
+        <form action="{{action}}" method="post">
+            <div class="form-group">
+                <label for="n">Имя</label>
+                <input class="form-control input-sm" type="text" id="n" name="user[name]" required placeholder="Имя" value="{{name}}">
+            </div>
+            <div class="form-group">
+                <label for="f">Фамилия</label>
+                <input class="form-control input-sm" type="text" id="f" name="user[lname]" required placeholder="Фамилия" value="{{lname}}">
+            </div>
+            <div class="form-group">
+                <label for="b">Дата рождения</label>
+                <input class="form-control input-sm" type="date" id="b" name="user[bday]" required value="{{bday}}">
+            </div>
+            <div class="form-group">
+                <label for="u">Вебсайт</label>
+                <input class="form-control input-sm" type="url" id="u" name="user[url]" required placeholder="Вебсайт" value="{{url}}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">отправить</button>
+            </div>
+        </form>
+    </div>
+</div>
