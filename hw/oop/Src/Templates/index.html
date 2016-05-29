@@ -10,7 +10,43 @@
         <h1>Ваше первое ООП приложение</h1>
         <p>отправьте форму</p>
     </div>
+    {{errors}}
     {{msg}}
     {{content}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+        $('button#ajax').click(function(e){
+            e.preventDefault();
+            $.ajax({
+                method: "POST",
+                url: "{{url}}",
+                dataType: "json",
+                processData: false,
+                contentType: 'application/json',
+                data: JSON.stringify($( 'form' ).serializeArray())
+            })
+            .done(function( data ) {
+                $.each(data, function(i, obj){
+                    $('[name="'+obj.name+'"]').val(obj.value);
+                });
+                var $err = $('#err');
+                $err.remove();
+                var $ul = $('<ul>');
+                $.each(data.errors, function(i, err){
+                    $ul.append('<li>'+err+'</li>');
+                });
+                if(!$.isEmptyObject(data.errors)) {
+                    $('.jumbotron').after('<p class="bg-danger" id="err" style="padding:10px;">');
+                    $('#err').append($ul);
+                }
+                var $info = $('#info');
+                if($info.length) {
+                    $info.text('Данные AJAX получены');
+                } else {
+                    $('.jumbotron').after('<p class="bg-success" id="info" style="padding:10px;">Данные AJAX получены</p>');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

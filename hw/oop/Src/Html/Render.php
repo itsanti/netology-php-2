@@ -8,10 +8,16 @@ class Render {
 
     private $tplvars = [];
     private $layout = self::DEFAULT_LAYOUT;
+    private $direct = null;
     
-    public function __construct($tplvars = [], $layout = self::DEFAULT_LAYOUT)
+    public function __construct($tplvars = [], $layout = self::DEFAULT_LAYOUT, $direct = null)
     {
+
         $this->layout = $layout;
+
+        if (!is_null($direct)) {
+            $this->direct = $direct;
+        }
 
         if (!empty($tplvars)) {
             $this->setTplVars($tplvars, $layout);            
@@ -20,7 +26,11 @@ class Render {
 
     public function setTplVars($vars)
     {
-        $this->tplvars[$this->layout] = $vars;
+        if (isset($this->tplvars[$this->layout])) {
+            $this->tplvars[$this->layout] += $vars;
+        } else {
+            $this->tplvars[$this->layout] = $vars;
+        }
     }
     
     public function render($xssafe = false)
@@ -49,10 +59,14 @@ class Render {
         $placeholders = null;
         $content = '';
 
-        $file = \ROOT . '/Src/Templates/' . $name;
+        if ($this->direct) {
+            $content = $this->direct;
+        } else {
+            $file = \ROOT . '/Src/Templates/' . $name;
 
-        if (is_readable($file)) {
-            $content = file_get_contents($file);
+            if (is_readable($file)) {
+                $content = file_get_contents($file);
+            }    
         }
 
         preg_match_all('~{{(.+?)}}~', $content, $matches);
@@ -75,5 +89,14 @@ class Render {
     private function xssafe($data, $encoding='UTF-8')
     {
         return htmlspecialchars($data, ENT_QUOTES | ENT_HTML401, $encoding);
+    }
+
+    public function renderArray($arr, $type) {
+        $html = "<div class=\"bg-{$type}\"><ul>";
+        foreach ( $arr as $item ) {
+            $html .= "<li>{$item}</li>";
+        }
+        $html .= '</ul></div>';
+        return $html;
     }
 }

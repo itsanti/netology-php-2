@@ -1,13 +1,23 @@
 <?php
 
-namespace App\Http;
+namespace App\Http\Responses;
 
 
-class Response {
+abstract class Response {
 
-    private $body;
-    private $headers = [];
-    
+    protected $body;
+    protected $headers = [];
+
+    public static function build($type = '') {
+        switch ($type) {
+            case 'json':
+                return new ResponseJson();
+            case 'html':
+            default:
+                return new ResponseHtml();
+        }
+    }
+
     public function setHeader($name, $value) {
         $this->headers[$name] = $value;
     }
@@ -38,18 +48,5 @@ class Response {
         if (!is_null($status)) {
             http_response_code($status);
         }
-    }
-
-    public function setBody($content) {
-        $this->body = $content;
-    }
-
-    public function getBody($render = null) {
-
-        if (!is_null($render)) {
-            return $render->render();
-        }
-
-        return $this->body;
     }
 }
