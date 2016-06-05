@@ -26,8 +26,8 @@ use App\Application;
 use App\Http\Requests\Request;
 use App\Http\Responses\Response;
 
-$app = new Application;
-$request = Request::build();
-$response = Response::build($request->getType());
+$app = Application::getInstance();
+$request  = Request::build();
+$response = Response::build($request);
 $app->execute($request, $response);
 

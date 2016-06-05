@@ -6,22 +6,15 @@ class Render {
 
     const DEFAULT_LAYOUT = 'index.html';
 
-    private $tplvars = [];
-    private $layout = self::DEFAULT_LAYOUT;
-    private $direct = null;
+    private $tplvars;
+    private $layout;
+    private $direct;
     
     public function __construct($tplvars = [], $layout = self::DEFAULT_LAYOUT, $direct = null)
     {
-
         $this->layout = $layout;
-
-        if (!is_null($direct)) {
-            $this->direct = $direct;
-        }
-
-        if (!empty($tplvars)) {
-            $this->setTplVars($tplvars, $layout);            
-        }
+        $this->direct = $direct;
+        $this->setTplVars($tplvars, $layout);
     }
 
     public function setTplVars($vars)

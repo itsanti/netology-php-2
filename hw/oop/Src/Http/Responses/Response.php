@@ -8,11 +8,11 @@ abstract class Response {
     protected $body;
     protected $headers = [];
 
-    public static function build($type = '') {
-        switch ($type) {
-            case 'json':
+    public static function build($request) {
+        switch ($request) {
+            case 'RequestJson':
                 return new ResponseJson();
-            case 'html':
+            case 'RequestHtml':
             default:
                 return new ResponseHtml();
         }

@@ -5,6 +5,26 @@ use App\Storages\Session;
 
 class Application
 {
+
+    // объект приложения д.б. единственным
+    
+    private static $instance;
+
+    public static function getInstance()
+    {
+        if (null === static::$instance) {
+            static::$instance = new static();
+        }
+        return static::$instance;
+    }
+
+    protected function __construct()
+    {
+    }
+
+    final public function __clone(){}
+    final public function __wakeup(){}
+
     /**
      * Метод, показывающий какое минимальное количество методов у вас должны быть реализовано в объекте Request
      * @param Http\Requests\Request $request
@@ -40,8 +60,8 @@ class Application
         if($request->getMethod() === 'POST') {
             $values = $request->getBody();
 
-            switch ($request->getType()) {
-                case 'json':
+            switch ($request) {
+                case 'RequestJson':
                     $data = [];
                     foreach ( $values as $item ) {
                         $data[$item['name']] = $item['value'];
@@ -51,7 +71,7 @@ class Application
                     $response->sendHeaders();
                     echo $response->getBody();
                     exit;
-                case 'html':
+                case 'RequestHtml':
                 default:
                     $errors = $form->validate($values);
                     Session::saveData('data', $values);

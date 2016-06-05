@@ -5,20 +5,14 @@ namespace App\Http\Requests;
 
 abstract class Request {
 
-    protected static $type = 'html';
-    
     public static function build()
     {
-        $accept = self::getHeader('Accept');
-        preg_match('~text/html|application/json~i', $accept, $matches);
-        if(!empty($matches)) {
-            $accept = $matches[0];
-        }
-        switch ($accept) {
+        $type = self::getHeader('Content-Type');
+
+        switch ($type) {
             case 'application/json':
-                self::$type = 'json';
                 return new RequestJson();
-            case 'text/html':
+            case 'application/x-www-form-urlencoded':
             default:
                 return new RequestHtml();
         }
@@ -43,10 +37,10 @@ abstract class Request {
     public function getHeaders() {
         return getallheaders();
     }
-    
-    public function getType()
-    {
-        return self::$type;
+
+    public function __toString() {
+        if ($pos = strrpos(static::class, '\\')) return substr(static::class, $pos + 1);
+        return $pos;
     }
 
     abstract public function getBody();

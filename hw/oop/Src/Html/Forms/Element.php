@@ -6,6 +6,7 @@ namespace App\Html\Forms;
 class Element {
     protected $type;
     protected $opt;
+    protected $tpl;
     
     public function __construct($type, $opt) {
         $this->type = $type;
@@ -21,7 +22,22 @@ class Element {
         }
         return '';
     }
-    
+
+    public function render()
+    {
+        if (array_key_exists('wrapper', $this->opt)) {
+            return $this->wrapper($this->tpl);
+        }
+        return '';
+    }
+
+    /**
+     * Функция оборачивает элемент в заданный html
+     *
+     * @param string $html разметка, которую нужно обернуть
+     *
+     * @return string
+     */
     protected function wrapper($html)
     {
         if ($this->opt['wrapper']['to'] == 'b') {
