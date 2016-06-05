@@ -1,0 +1,14 @@
+{
+  "name": "itsanti/sql",
+  "description": "Practice MySQL App",
+  "keywords": [
+    "php", "sql", "mysql"
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "App\\": "Src/"
+    }
+  }
+}
