@@ -2,11 +2,11 @@
 
 error_reporting(E_ALL);
 
-define('ROOT', __DIR__);
+define('TPLS', __DIR__ . '/Templates/');
 
-require ROOT . '/vendor/autoload.php';
+require  __DIR__ . '/vendor/autoload.php';
 
-use App\Application;
+use App\HW1\Application;
 
 $app = Application::getInstance();
 $app->execute();
