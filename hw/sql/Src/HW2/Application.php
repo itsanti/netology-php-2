@@ -6,6 +6,7 @@ class Application extends \App\Application
 {
     protected static $dir = __DIR__;
     protected $redirect = false;
+    protected $sort = 'date_added';
 
     protected $actions = [
         'edit' => ['Изменить', 'btn-info'],
@@ -22,6 +23,9 @@ class Application extends \App\Application
             $this->saveTask();
             $this->redirect();
         }
+        if (isset($_POST['sort'])) {
+            $this->setSortTasks();
+        }
         if (isset($_POST['del'])) {
             $id = !empty($_POST['id']) ? (int)$_POST['id'] : null;
             $this->delTask($id);
@@ -36,7 +40,8 @@ class Application extends \App\Application
             $content = $this->renderDelForm($task);
         } else {
             $content = $this->renderTasks($this->getTasks());
-            $content = $this->renderAddForm($task) . $content;    
+            $content = $this->renderAddForm($task) .
+                       $this->renderSortForm() . $content;
         }
         echo $this->renderPage($content);
     }
@@ -109,14 +114,24 @@ class Application extends \App\Application
     }
 
     /**
+     * Функция устанавливает параметр сортировки
+     */
+    public function setSortTasks()
+    {
+        $sort = !empty($_POST['sort_by']) ? $_POST['sort_by'] : '';
+        if (in_array($sort, ['date_added', 'is_done', 'description'])) {
+            $this->sort = $sort;
+        }
+    }
+
+    /**
      * Функция выбирает данные для таблицы задач.
      */
     public function getTasks()
     {
-        $sql = 'SELECT * FROM `tasks`';
+        $sql = "SELECT * FROM `tasks` ORDER BY {$this->sort}";
         $stm = $this->pdo->prepare($sql);
         $stm->execute();
-
         return $stm->fetchAll(\PDO::FETCH_ASSOC);
     }
 
@@ -226,6 +241,32 @@ class Application extends \App\Application
             ["{{description}}", '{{subValue}}'],
             [$task, $subValue], $tpl
         );
+        return $tpl;
+    }
+
+    /**
+     * Функция формирует форму для сортировки задач.
+     *
+     * @return string html разметка
+     */
+    public function renderSortForm()
+    {
+        $options = [
+            'date_added' => 'Дате добавления',
+            'is_done' => 'Статусу',
+            'description' => 'Описанию'
+        ];
+
+        $html = '';
+        foreach ( $options as $opt => $val ) {
+            if ($opt == $this->sort) {
+                $html .= "<option value=\"$opt\" selected>{$val}</option>";
+            } else {
+                $html .= "<option value=\"$opt\">{$val}</option>";
+            }
+        }
+        $tpl = file_get_contents(\TPLS . 'hw2/formSort.html');
+        $tpl = str_replace("{{options}}", $html, $tpl);
         return $tpl;
     }
 
