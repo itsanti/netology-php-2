@@ -19,17 +19,17 @@ abstract class Application
     protected function __construct(){}
     final public function __clone(){}
     final public function __wakeup(){}
-    
-    public function redirect()
+
+    /**
+     * Вспомогательный метод для перенаправления.
+     * 
+     * @param string $path путь для перенаправления
+     * @param int $status код ответа
+     */
+    public function redirect($path, $status)
     {
-        http_response_code(303);
-        header('Location: '.strtok($_SERVER['REQUEST_URI'],'?'));
+        http_response_code($status);
+        header('Location: '.$path);
         exit;
     }
-
-    public function xssafe($data, $encoding='UTF-8')
-    {
-        return htmlspecialchars($data, ENT_QUOTES | ENT_HTML401, $encoding);
-    }
-
 }

@@ -6,7 +6,7 @@ define('TPLS', __DIR__ . '/Templates/');
 
 require  __DIR__ . '/vendor/autoload.php';
 
-use App\HW2\Application;
+use App\HW2\ToDoApplication;
 
-$app = Application::getInstance();
+$app = ToDoApplication::getInstance();
 $app->execute();

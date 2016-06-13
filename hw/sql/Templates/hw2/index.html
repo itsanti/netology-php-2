@@ -19,6 +19,14 @@
         <h1>Список дел на сегодня</h1>
         <p>простое TODO приложение</p>
     </div>
-    {{content}}
+    {{content|raw}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+        $('.btn-danger').click(function(e){
+            if (!confirm('Действительно удалить запись?')) {
+                e.preventDefault();
+            }
+        });
+    </script>
 </body>
 </html>

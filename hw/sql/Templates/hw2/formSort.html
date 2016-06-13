@@ -3,7 +3,13 @@
         <div class="form-group">
             <label for="sort">Сортировать по:</label>
             <select class="form-control input-sm" name="sort_by" id="sort">
-                {{options}}
+                {% for key, option in options %}
+                {% if key == sort %}
+                <option value="{{key}}" selected>{{option}}</option>
+                {% else %}
+                <option value="{{key}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
             </select>
         </div>
         <div class="form-group">
