@@ -1,0 +1,20 @@
+<div class="col-xs-5">
+    <form action="" method="post" class="form-inline">
+        <div class="form-group">
+            <label for="sort">Сортировать по:</label>
+            <select class="form-control input-sm" name="sort_by" id="sort">
+                {% for key, option in options %}
+                {% if key == sort %}
+                <option value="{{key}}" selected>{{option}}</option>
+                {% else %}
+                <option value="{{key}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-warning btn-sm" name="sort">Отсортировать</button>
+        </div>
+    </form>
+</div>
+</div>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>список дел TODO | netology</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <style>
+        .table > tbody > tr > th,
+        .table > tbody > tr > td {
+            vertical-align: middle;
+        }
+        .table ul {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body class="container">
+    <div class="jumbotron">
+        <h1>Список дел на сегодня</h1>
+        <p>простое TODO приложение</p>
+    </div>
+    {{content|raw}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+        $('.btn-danger').click(function(e){
+            if (!confirm('Действительно удалить запись?')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% set taskStatus = [
+    '<span class="text-warning">В процессе</span>',
+    '<span class=\"text-success\">Выполнено</span>'
+] %}
+{% set actions = {
+    'edit' : ['Изменить', 'btn-info'],
+    'done' : ['Выполнить', 'btn-success'],
+    'delete' : ['Удалить', 'btn-danger']
+} %}
+<table class="table table-bordered table-condensed">
+<tr>
+    <th class="text-center bg-success">Описание задачи</th>
+    <th class="text-center bg-success">Дата добавления</th>
+    <th class="text-center bg-success">Статус</th>
+    <th class="text-center bg-success">Управление</th>
+</tr>
+{% for task in tasks %}
+<tr><td style="width:50%">{{task.description}}</td>
+<td class="text-center" style="width:15%">{{task.date_added}}</td>
+<td class="text-center" style="width:10%">{{taskStatus[task.is_done]|raw}}</td>
+<td><ul class="list-inline">
+    {% for action, prop in actions %}
+    <li><a href="?id={{task.id}}&action={{action}}" class="btn {{prop[1]}} btn-xs">{{prop[0]}}</a></li>
+    {% endfor %}
+</ul></td></tr>
+{% endfor %}
+</table>

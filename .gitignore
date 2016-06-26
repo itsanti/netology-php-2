@@ -1,4 +1,5 @@
 .idea/
 vendor/
 dump/
+cache/
 composer.phar
