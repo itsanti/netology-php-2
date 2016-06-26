@@ -39,3 +39,6 @@ Repository for "netology php-2" course homeworks.
 
 ### 4.2 «Запросы SELECT, INSERT, UPDATE и DELETE»
 Введение в SQL `/hw/sql/index2.php`.
+
+### 4.4 «Управление таблицами и базами данных»
+Введение в SQL `/hw/sql/index4.php`.

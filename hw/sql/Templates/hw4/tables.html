@@ -1,0 +1,12 @@
+<table class="table table-bordered table-condensed" style="width: 50%;">
+<tr>
+    <th class="text-center bg-success">Поле</th>
+    <th class="text-center bg-info">Тип</th>
+</tr>
+{% for field, type in data %}
+<tr>
+    <td style="width: 50%;">{{field}}</td>
+    <td>{{type}}</td>
+</tr>
+{% endfor %}
+</table>

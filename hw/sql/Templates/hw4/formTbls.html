@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-xs-4">
+        <form action="" method="get" class="form-inline" style="padding-bottom: 10px;">
+            <div class="form-group">
+                <label for="table">Выберите таблицу:</label>
+                <select class="form-control input-sm" name="table" id="table">
+                    {% for table in tables %}
+                    {% if table == current %}
+                    <option value="{{table}}" selected>{{table}}</option>
+                    {% else %}
+                    <option value="{{table}}">{{table}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-sm">Показать таблицу</button>
+            </div>
+        </form>
+    </div>
+</div>
