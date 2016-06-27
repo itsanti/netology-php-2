@@ -1,0 +1,12 @@
+{
+  "name": "itsanti/latlong",
+  "description": "Practice Composer App",
+  "keywords": [
+    "php", "composer", "lib"
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "yandex/geo":"~1.1"
+  }
+}

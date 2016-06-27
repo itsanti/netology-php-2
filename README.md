@@ -42,3 +42,6 @@ Repository for "netology php-2" course homeworks.
 
 ### 4.4 «Управление таблицами и базами данных»
 Введение в SQL `/hw/sql/index4.php`.
+
+### 5.1 «Менеджер зависимостей Composer»
+Введение в SQL `/hw/sql/index4.php`.
