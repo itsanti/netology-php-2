@@ -5,9 +5,9 @@ namespace App;
 class Application
 {
 
-    protected $db;
-    protected $config = [];
-    
+    public $db;
+    public $config = [];
+
     protected function __construct()
     {
     }
@@ -26,35 +26,14 @@ class Application
         return $instance;
     }
 
-    protected function init()
+    public function run($request, $response)
     {
         $this->config = include APP_ROOT . '/conf.php';
         $this->db = \App\Db\Connection::getConnection($this->config['db']);
         $this->view = new \App\Html\View($this->config['view']);
-    }
-    
-    public function run($request, $response)
-    {
-        $this->init();
-        $result = $this->db->query('SELECT * FROM tasks');
-        $response->setBody([
-            'tpl' => 'index.phtml',
-            'items' => $result->fetchAll(),
-            'content' => 'hello, world!'
-        ]);
-        echo $response->getBody($this->view);
-    }
-
-    /**
-     * Вспомогательный метод для перенаправления.
-     * 
-     * @param string $path путь для перенаправления
-     * @param int $status код ответа
-     */
-    public function redirect($path, $status)
-    {
-        http_response_code($status);
-        header('Location: '.$path);
-        exit;
+        $this->request = $request;
+        $this->response = $response;
+        $this->router = new Router($this->config);
+        echo $this->router->route($request);
     }
 }

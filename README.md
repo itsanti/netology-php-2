@@ -45,3 +45,9 @@ Repository for "netology php-2" course homeworks.
 
 ### 5.1 «Менеджер зависимостей Composer»
 Широта и долгота по адресу `/hw/comp/index.php`.
+
+### 5.3 «Фреймворк Laravel»
+Простое приложение записная книжка `/hw/lara/index.php`.
+
+### Дипломный проект
+Типовой сервис вопросов и ответов `/qa/index.php`.

@@ -19,7 +19,7 @@ abstract class Request {
     }
 
     public function getRequestTarget() {
-        return $_SERVER['REQUEST_URI'];
+        return strtok($_SERVER['REQUEST_URI'],'?');
     }
 
     public function getMethod() {

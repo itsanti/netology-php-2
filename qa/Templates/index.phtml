@@ -1,20 +1,39 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <title>Вопросы и Ответы | netology</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-</head>
-<body class="container">
-    <div class="jumbotron">
-        <h1>QA сервис</h1>
-        <p>лучший сервис вопросов и ответов</p>
-    </div>
-    {{content}}
-    <ul>
-    {% for item in items %}
-    <li>{{ item.description }}</li>
+{% extends 'layout.phtml' %}
+
+{% block content %}
+<ul class="cd-faq-categories">
+    {% for cat in cats %}
+    {% if loop.first %}
+    <li><a class="selected" href="#{{cat.slug}}">{{cat.name}}</a></li>
+    {% else %}
+    <li><a href="#{{cat.slug}}">{{cat.name}}</a></li>
+    {% endif %}
     {% endfor %}
+</ul> <!-- cd-faq-categories -->
+
+<div class="cd-faq-items">
+    {% for cat in cats %}
+    <ul id="{{cat.slug}}" class="cd-faq-group">
+        <li class="cd-faq-title"><h2>{{cat.name}}</h2></li>
+        {% if cat.questions is not empty %}
+        {% for question in cat.questions %}
+        <li>
+            <a class="cd-faq-trigger" href="#0">{{question.qtitle}}</a>
+            <div class="cd-faq-content">
+                <div>
+                    <p>{{question.q}}</p>
+                </div>
+                <div class="answer">
+                    <p><strong>Ответ: </strong>{{question.a}}</p>
+                </div>
+            </div> <!-- cd-faq-content -->
+        </li>
+        {% endfor %}
+        {% else %}
+        <li class="nocontent"><p >В данной категории нет вопросов. Вы можете <a href="{{'ask'|buildHref}}">задать</a> его.</p></li>
+        {% endif %}
     </ul>
-</body>
-</html>
+    {% endfor %}
+</div> <!-- cd-faq-items -->
+<a href="#0" class="cd-close-panel">Close</a>
+{% endblock %}

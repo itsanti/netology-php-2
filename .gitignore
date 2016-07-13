@@ -2,4 +2,5 @@
 vendor/
 dump/
 cache/
+tmp/
 composer.phar
