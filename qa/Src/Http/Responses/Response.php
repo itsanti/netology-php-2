@@ -58,7 +58,7 @@ abstract class Response {
      */
     public function redirect($path, $status)
     {
-        $this->setHeader('Location', $path . '/');
+        $this->setHeader('Location', $path);
         $this->sendHeaders($status);
         exit;
     }

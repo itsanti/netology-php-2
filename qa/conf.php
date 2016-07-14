@@ -16,7 +16,11 @@ return [
     'path_root' => '/qa',
     'routes' => [
         '' => 'Index',
+        '/ask' => 'AskQuestion',
         '/admin' => 'Admin',
-        '/ask' => 'AskQuestion'
+        '/admin/new' => 'AdminNew',
+        '/admin/edit' => 'AdminEdit',
+        '/admin/del' => 'AdminDel',
+        '/admin/logout' => 'AdminLogout'
     ]
 ];

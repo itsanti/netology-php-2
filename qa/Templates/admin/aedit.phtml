@@ -1,0 +1,28 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+<form action="{{'admin/edit'|buildHref}}" method="post" class="pure-form pure-form-aligned">
+    <fieldset>
+        <legend>Редактировать пароль администратора</legend>
+
+        <div class="pure-control-group">
+            <label for="who">Выбрать администратора</label>
+            <select id="who" name="edit[who]">
+                {% for admin in admins %}
+                <option value="{{admin.id}}">{{admin.login}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="pure-control-group">
+            <label for="password">новый пароль</label>
+            <input id="password" type="text" name="edit[password]"
+                   placeholder="пароль" required class="pure-input-1-2">
+        </div>
+
+        <div class="pure-controls">
+            <button type="submit" class="pure-button button-success">редактировать</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

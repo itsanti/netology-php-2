@@ -6,6 +6,7 @@ class Router {
 
     protected $routes = [];
     protected static $cleanUrl = false;
+    protected static $path_root = '';
 
     public function __construct($config)
     {
@@ -14,6 +15,7 @@ class Router {
         }, array_keys($config['routes']), $config['routes']);
         $this->routes = call_user_func_array('array_merge', $this->routes);
         self::$cleanUrl = $config['clean_url'];
+        self::$path_root = $config['path_root'];
     }
 
     public function route($request)
@@ -34,16 +36,26 @@ class Router {
             $ctrl = new Controller();
             return $ctrl->$method();
         }
+        if (method_exists('\\App\\AdminController', $method)) {
+            $ctrl = new AdminController($method);
+            return $ctrl->$method();
+        }
         return 'Error';
     }
 
     public function getPath($name)
     {
-        return array_search($name, $this->routes);
+        if (self::$cleanUrl) {
+            return array_search($name, $this->routes);
+        }
+        return self::buildHref($name);
     }
 
     public static function buildHref($route)
     {
+        if ($route == 'Index') {
+            return self::$path_root . '/';
+        }
         return (self::$cleanUrl) ? $route : '?r=' . $route;
     }
 }

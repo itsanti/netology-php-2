@@ -1,0 +1,22 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+<form action="{{'admin/del'|buildHref}}" method="post" class="pure-form pure-form-aligned">
+    <fieldset>
+        <legend>Удалить администратора</legend>
+
+        <div class="pure-control-group">
+            <label for="who">Выбрать администратора</label>
+            <select id="who" name="del[who]">
+                {% for admin in admins %}
+                <option value="{{admin.id}}">{{admin.login}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="pure-controls">
+            <button type="submit" class="pure-button button-success">удалить</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

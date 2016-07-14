@@ -38,7 +38,6 @@ class Controller {
                 'postdate' => time(),
                 'author_name' => $vars['ask']['name'],
                 'author_email' => $vars['ask']['email'],
-                'qtitle' => $vars['ask']['title'],
                 'q' => $vars['ask']['question']
             ];
             $question = new Question();
@@ -57,10 +56,4 @@ class Controller {
     {
         return '404';
     }
-
-    public function actionAdmin()
-    {
-        return 'hi admin';
-    }
-
 }

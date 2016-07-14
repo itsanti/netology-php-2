@@ -16,6 +16,11 @@ class View {
         $this->twig->addFilter($filter);
     }
 
+    public function addGlobal($var, $value)
+    {
+        $this->twig->addGlobal($var, $value);
+    }
+
     public function render($tpl, $vars)
     {
         return $this->twig->render($tpl, $vars);

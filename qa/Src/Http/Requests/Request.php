@@ -43,5 +43,13 @@ abstract class Request {
         return $pos;
     }
 
+    public function checkAccess()
+    {
+        if (!empty($_SESSION['isAdmin'])) {
+            return true;
+        }
+        return false;
+    }
+
     abstract public function getBody();
 }

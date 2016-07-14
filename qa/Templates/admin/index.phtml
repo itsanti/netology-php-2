@@ -1,0 +1,57 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+{% if admin %}
+<h1>Список администраторов</h1>
+<table class="pure-table pure-table-bordered">
+    <thead><tr>
+            <th>id</th>
+            <th>логин</th>
+            <th>статус на сайте</th>
+            <th>дата создания</th>
+    </tr></thead>
+    {% for admin in admins %}
+    <tbody><tr>
+        <td>{{admin.id}}</td>
+        <td>{{admin.login}}</td>
+        <td>{{ admin.status ? 'активен' : 'отключен' }}</td>
+        <td>{{admin.created_at|date('Y-m-d H:i:s')}}</td>
+    </tr></tbody>
+    {% endfor %}
+</table>
+<h1>Список тем</h1>
+<table class="pure-table pure-table-bordered">
+    <thead><tr>
+        <th>id</th>
+        <th>название</th>
+        <th>число вопросов</th>
+        <th>вопросов опубликовано</th>
+        <th>вопросов без ответа</th>
+    </tr></thead>
+    {% for category in categories %}
+    <tbody><tr>
+        <td>{{category.id}}</td>
+        <td>{{category.name}}</td>
+        <td>{{ admin.status ? 'активен' : 'отключен' }}</td>
+        <td>{{admin.created_at|date('Y-m-d H:i:s')}}</td>
+    </tr></tbody>
+    {% endfor %}
+</table>
+{% else %}
+<form action="{{'admin'|buildHref}}" method="post" class="pure-form pure-form-stacked">
+    <fieldset>
+        <legend>Привет, Гость. Войдите в систему для администрирования.</legend>
+
+        <label for="login">Логин / Имя</label>
+        <input type="text" id="login" name="login" required placeholder="login">
+
+        <label for="pass">Пароль</label>
+        <input type="password" id="pass" name="pass" placeholder="password">
+
+        <button type="submit" class="pure-button pure-button-primary">войти</button>
+
+    </fieldset>
+</form>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,33 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+<form action="{{'admin/new'|buildHref}}" method="post" class="pure-form pure-form-aligned">
+    <fieldset>
+        <legend>Создать нового администратора</legend>
+
+        <div class="pure-control-group">
+            <label for="login">логин</label>
+            <input id="login" type="text" name="new[login]"
+                   placeholder="логин для входа" required class="pure-input-1-2">
+        </div>
+
+        <div class="pure-control-group">
+            <label for="password">пароль</label>
+            <input id="password" type="text" name="new[password]"
+                   placeholder="пароль" required class="pure-input-1-2">
+        </div>
+
+        <div class="pure-control-group">
+            <label for="status">сатус на сайте</label>
+            <select id="status" name="new[status]">
+                <option value="0">отключен</option>
+                <option value="1">активен</option>
+            </select>
+        </div>
+
+        <div class="pure-controls">
+            <button type="submit" class="pure-button button-success">создать</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

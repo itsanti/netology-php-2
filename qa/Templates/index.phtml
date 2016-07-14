@@ -18,11 +18,8 @@
         {% if cat.questions is not empty %}
         {% for question in cat.questions %}
         <li>
-            <a class="cd-faq-trigger" href="#0">{{question.qtitle}}</a>
+            <a class="cd-faq-trigger" href="#0">{{question.q}}</a>
             <div class="cd-faq-content">
-                <div>
-                    <p>{{question.q}}</p>
-                </div>
                 <div class="answer">
                     <p><strong>Ответ: </strong>{{question.a}}</p>
                 </div>

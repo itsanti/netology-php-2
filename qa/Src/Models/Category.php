@@ -13,4 +13,9 @@ class Category extends Model {
 
     protected $tblname = 'category';
 
+    public function getStat()
+    {
+        $sql = 'SELECT c.id, c.name, q.status, count(*) as total FROM `category` as c LEFT JOIN question as q ON c.id = q.cat_id GROUP BY c.id, q.status';
+    }
+
 }

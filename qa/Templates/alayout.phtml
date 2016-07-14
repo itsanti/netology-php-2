@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="assets/css/pure.css"> <!-- Ask Form style -->
+    <link rel="stylesheet" href="assets/css/reset.css"> <!-- CSS reset -->
+
+    <link rel="stylesheet" href="assets/css/style.css"> <!-- Resource style -->
+    <script src="assets/js/modernizr.js"></script> <!-- Modernizr -->
+    <title>Админка</title>
+</head>
+<body>
+<header>
+    <h1>Вопросы и Ответы</h1>
+</header>
+<section class="cd-faq">
+    {% if admin %}
+    <ul class="cd-faq-categories">
+        <li><a href="{{'admin'|buildHref}}">Список Администраторов</a></li>
+        <li><a href="{{'admin/new'|buildHref}}">Создать администратора</a></li>
+        <li><a href="{{'admin/edit'|buildHref}}">Редактировать администратора</a></li>
+        <li><a href="{{'admin/del'|buildHref}}">Удалить администратора</a></li>
+        <li><a href="{{'admin/logout'|buildHref}}">Выйти</a></li>
+    </ul> <!-- cd-faq-categories -->
+    {% endif %}
+    <div class="cd-faq-items">
+    {% block content %}{% endblock %}
+    </div>
+</section> <!-- cd-faq -->
+<script src="assets/js/jquery-2.1.1.js"></script>
+<script src="assets/js/jquery.mobile.custom.min.js"></script>
+</body>
+</html>
