@@ -32,29 +32,34 @@ class Router {
         } else {
             $method = 'action404';
         }
-        if (method_exists('\\App\\Controller', $method)) {
-            $ctrl = new Controller();
+        if (method_exists('\\App\\Controllers\\Controller', $method)) {
+            $ctrl = new Controllers\Controller($method);
             return $ctrl->$method();
         }
-        if (method_exists('\\App\\AdminController', $method)) {
-            $ctrl = new AdminController($method);
+        if (method_exists('\\App\\Controllers\\AdminController', $method)) {
+            $ctrl = new Controllers\AdminController($method);
             return $ctrl->$method();
         }
         return 'Error';
     }
 
-    public function getPath($name)
+    public function getPath($name, $params = [])
     {
+        /*
         if (self::$cleanUrl) {
             return array_search($name, $this->routes);
-        }
-        return self::buildHref($name);
+        }*/
+        return self::buildHref($name, $params);
     }
 
-    public static function buildHref($route)
+    public static function buildHref($route, $params = [])
     {
         if ($route == 'Index') {
             return self::$path_root . '/';
+        }
+        if (!empty($params)) {
+            $params = http_build_query($params);
+            return (self::$cleanUrl) ? $route . '/?' . $params : '?r=' . $route . '&' . $params;
         }
         return (self::$cleanUrl) ? $route : '?r=' . $route;
     }

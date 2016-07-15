@@ -19,10 +19,20 @@
 <section class="cd-faq">
     {% if admin %}
     <ul class="cd-faq-categories">
+        <li>Администраторы</li>
         <li><a href="{{'admin'|buildHref}}">Список Администраторов</a></li>
         <li><a href="{{'admin/new'|buildHref}}">Создать администратора</a></li>
         <li><a href="{{'admin/edit'|buildHref}}">Редактировать администратора</a></li>
         <li><a href="{{'admin/del'|buildHref}}">Удалить администратора</a></li>
+        <li>Категории</li>
+        <li><a href="{{'cat/new'|buildHref}}">Создать тему</a></li>
+        <li><a href="{{'cat/del'|buildHref}}">Удалить тему</a></li>
+        <li>Вопросы</li>
+        <li><a href="{{'ask'|buildHref}}">Задать вопрос</a></li>
+        <li><a href="{{'cat/view'|buildHref}}">Редактировать вопросы</a></li>
+        <li><a href="{{'q/list'|buildHref}}">Список без ответов</a></li>
+        <li>Аккаунт</li>
+        <li><a href="{{'Index'|buildHref}}">На главную</a></li>
         <li><a href="{{'admin/logout'|buildHref}}">Выйти</a></li>
     </ul> <!-- cd-faq-categories -->
     {% endif %}

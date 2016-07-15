@@ -1,0 +1,63 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+{% if qid %}
+<p><a href="{{'cat/view'|buildHref({'cat': cat})}}">назад</a></p>
+<form action="{{'q/edit'|buildHref}}" method="post" class="pure-form pure-form-aligned">
+    <fieldset>
+        <legend>Редактировать вопрос {{qid}} (дата публикации {{question.postdate|date('Y-m-d H:i:s')}})</legend>
+
+        <div class="pure-control-group">
+            <label for="category">Категория</label>
+            <select id="category" name="edit[category]">
+                {% for category in categories %}
+                <option value="{{category.id}}" {% if category.id == cat %}selected{% endif %}>{{category.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="pure-control-group">
+            <label for="status">Статус</label>
+            <select id="status" name="edit[status]">
+                {% for key, status in statuses %}
+                <option value="{{key}}" {% if question.status == key %}selected{% endif %}>{{status}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="pure-control-group">
+            <label for="text">имя автора</label>
+            <input id="text" type="text" name="edit[author_name]"
+                   placeholder="имя автора" value="{{question.author_name}}" class="pure-input-1-2">
+        </div>
+
+        <div class="pure-control-group">
+            <label for="email">email автора</label>
+            <input id="email" type="email" name="edit[author_email]"
+                   placeholder="email автора" value="{{question.author_email}}" class="pure-input-1-2">
+        </div>
+
+        <div class="pure-control-group">
+            <label for="question">Вопрос</label>
+            <textarea id="question" rows="5" name="edit[q]"
+                      placeholder="Ваш вопрос" required class="pure-input-2-3">{{question.q}}</textarea>
+        </div>
+
+        <div class="pure-control-group">
+            <label for="answer">Ответ</label>
+            <textarea id="answer" rows="5"  name="edit[a]"
+                      placeholder="ответ" class="pure-input-2-3">{{question.a}}</textarea>
+        </div>
+
+        <div class="pure-controls">
+            <input type="hidden" name="q" value="{{qid}}">
+            <input type="hidden" name="cat" value="{{cat}}">
+            <button type="submit" name="e" class="pure-button button-success">редактировать</button>
+            <button type="submit" name="del" class="pure-button button-error">удалить</button>
+        </div>
+    </fieldset>
+</form>
+{% else %}
+<p>Не выбран вопрос для редактирования.</p>
+{% endif %}
+{% endblock %}

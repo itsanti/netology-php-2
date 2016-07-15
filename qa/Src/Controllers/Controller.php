@@ -1,18 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Controllers;
 
 use App\Models\Category;
 use App\Models\Question;
 
-class Controller {
-
-    protected $app = null;
-
-    public function __construct()
-    {
-        $this->app = Application::getInstance();
-    }
+class Controller extends BasicController {
 
     public function actionIndex()
     {

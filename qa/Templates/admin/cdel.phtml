@@ -1,0 +1,24 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+<form action="{{'cat/del'|buildHref}}" method="post" class="pure-form pure-form-aligned">
+    <fieldset>
+        <legend>Удалить категорию</legend>
+
+        <p>Внимание будут удалены и все вопросы из неё!</p><br>
+
+        <div class="pure-control-group">
+            <label for="category">Выбрать категорию</label>
+            <select id="category" name="del[category]">
+                {% for category in categories %}
+                <option value="{{category.id}}">{{category.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="pure-controls">
+            <button type="submit" class="pure-button button-success">удалить</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

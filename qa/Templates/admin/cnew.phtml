@@ -1,0 +1,25 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+<form action="{{'cat/new'|buildHref}}" method="post" class="pure-form pure-form-aligned">
+    <fieldset>
+        <legend>Создать тему</legend>
+
+        <div class="pure-control-group">
+            <label for="name">имя</label>
+            <input id="name" type="text" name="cat[name]"
+                   placeholder="имя для показа на сайте" required class="pure-input-1-2">
+        </div>
+
+        <div class="pure-control-group">
+            <label for="slug">машинное имя (англ)</label>
+            <input id="slug" type="text" name="cat[slug]"
+                   placeholder="машинное имя" required class="pure-input-1-2">
+        </div>
+
+        <div class="pure-controls">
+            <button type="submit" class="pure-button button-success">создать тему</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}

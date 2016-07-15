@@ -10,8 +10,10 @@
     {% endif %}
     {% endfor %}
 </ul> <!-- cd-faq-categories -->
-
 <div class="cd-faq-items">
+    <div>
+        <a href="{{'admin'|buildHref}}">{{ admin ? 'В админку' : 'Войти' }}</a>
+    </div>
     {% for cat in cats %}
     <ul id="{{cat.slug}}" class="cd-faq-group">
         <li class="cd-faq-title"><h2>{{cat.name}}</h2></li>

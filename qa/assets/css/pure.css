@@ -855,6 +855,10 @@ a.pure-button-selected {
   background: #a9c056; /* this is a green */
 }
 
+.button-error {
+  background: rgb(202, 60, 60); /* this is a maroon */
+}
+
 /*csslint box-model:false*/
 /*
 Box-model set to false because we're setting a height on select elements, which

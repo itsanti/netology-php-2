@@ -1,0 +1,40 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+<form action="{{'cat/view'|buildHref}}" method="post" class="pure-form">
+    <fieldset>
+        <legend>Показать вопросы категории</legend>
+        <label for="category">Выбрать категорию</label>
+        <select id="category" name="cat">
+            {% for category in categories %}
+            <option value="{{category.id}}" {% if category.id == cat %}selected{% endif %}>{{category.name}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="pure-button button-success">показать</button>
+    </fieldset>
+</form>
+
+{% if questions %}
+{% set status = ['ожидает ответа', 'опубликован', 'скрыт'] %}
+<table class="pure-table pure-table-bordered">
+    <thead><tr>
+        <th>id</th>
+        <th>вопрос</th>
+        <th>статус на сайте</th>
+        <th>дата создания</th>
+        <th>редактировать вопрос</th>
+    </tr></thead>
+    {% for question in questions %}
+    <tbody><tr>
+        <td>{{question.id}}</td>
+        <td>{{question.q}}</td>
+        <td>{{status[question.status]}}</td>
+        <td>{{question.postdate|date('Y-m-d H:i:s')}}</td>
+        <td><a class="pure-button" href="{{'q/edit'|buildHref({'q': question.id, 'cat': cat})}}">редактировать</a></td>
+    </tr></tbody>
+    {% endfor %}
+</table>
+{% else %}
+<p>Категория не выбрана или в ней нет вопросов.</p>
+{% endif %}
+{% endblock %}

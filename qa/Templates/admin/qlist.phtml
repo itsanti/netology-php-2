@@ -1,0 +1,26 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+{% if questions %}
+<table class="pure-table pure-table-bordered">
+    <thead><tr>
+        <th>id</th>
+        <th>вопрос</th>
+        <th>категория</th>
+        <th>дата публикации</th>
+        <th>редактировать вопрос</th>
+    </tr></thead>
+    {% for question in questions %}
+    <tbody><tr>
+        <td>{{question.qid}}</td>
+        <td>{{question.q}}</td>
+        <td>{{question.name}}</td>
+        <td>{{question.postdate|date('Y-m-d H:i:s')}}</td>
+        <td><a class="pure-button" href="{{'q/edit'|buildHref({'q': question.qid, 'cat': question.cid})}}">редактировать</a></td>
+    </tr></tbody>
+    {% endfor %}
+</table>
+{% else %}
+<p>Категория не выбрана или в ней нет вопросов.</p>
+{% endif %}
+{% endblock %}

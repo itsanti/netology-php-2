@@ -168,7 +168,7 @@ header h1 {
     position: absolute;
     top: 0;
     left: 0;
-    width: 200px;
+    width: 300px;
     z-index: 2;
   }
   .cd-faq-categories a::before {
@@ -259,7 +259,7 @@ header h1 {
   .cd-faq-items {
     float: none;
     width: 100%;
-    padding-left: 220px;
+    padding-left: 320px;
   }
   .no-js .cd-faq-items {
     padding-left: 0;

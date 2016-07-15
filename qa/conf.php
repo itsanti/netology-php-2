@@ -21,6 +21,11 @@ return [
         '/admin/new' => 'AdminNew',
         '/admin/edit' => 'AdminEdit',
         '/admin/del' => 'AdminDel',
-        '/admin/logout' => 'AdminLogout'
+        '/admin/logout' => 'AdminLogout',
+        '/cat/new' => 'CatNew',
+        '/cat/del' => 'CatDel',
+        '/cat/view' => 'CatView',
+        '/q/edit' => 'QuestionEdit',
+        '/q/list' => 'QuestionList'
     ]
 ];
