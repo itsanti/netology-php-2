@@ -5,6 +5,7 @@ namespace App;
 class Router {
 
     protected $routes = [];
+    protected $extentions;
     protected static $cleanUrl = false;
     protected static $path_root = '';
 
@@ -16,6 +17,7 @@ class Router {
         $this->routes = call_user_func_array('array_merge', $this->routes);
         self::$cleanUrl = $config['clean_url'];
         self::$path_root = $config['path_root'];
+        $this->extentions = (!empty($config['extensions'])) ? $config['extensions'] : [];
     }
 
     public function route($request)
@@ -38,6 +40,10 @@ class Router {
         }
         if (method_exists('\\App\\Controllers\\AdminController', $method)) {
             $ctrl = new Controllers\AdminController($method);
+            if (array_key_exists('logger', $this->extentions)) {
+                $class = '\\App\\Extensions\\Loggers\\' . $this->extentions['logger']['className'];
+                $ctrl = new $class($ctrl, $this->extentions['logger']);
+            }
             return $ctrl->$method();
         }
         return 'Error';

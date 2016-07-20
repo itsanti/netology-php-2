@@ -5,7 +5,7 @@ namespace App\Controllers;
 
 class BasicController {
 
-    protected $app = null;
+    public $app = null;
     protected $isAdmin = false;
 
     public function __construct($method)

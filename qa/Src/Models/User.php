@@ -10,7 +10,7 @@ class User extends Model {
     const ACTIVE = 1;
     const BLOCKED = 0;
 
-    public function findCedentials($login) {
+    public function findCredentials($login) {
         $sql  = 'SELECT * FROM [user] WHERE %and';
         $result = $this->app->db->query($sql, [
             ['login = %s', $login],

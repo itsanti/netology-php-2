@@ -8,11 +8,15 @@ use \App\Models\User;
 
 class AdminController extends BasicController {
 
+    public $adminLogin;
+
     public function __construct($method)
     {
         parent::__construct($method);
         if (!$this->isAdmin && $method !== 'actionAdmin') {
             $this->app->response->redirect($this->app->router->getPath('admin'), 303);
+        } else {
+            $this->adminLogin = $this->app->session->loadData('adminLogin');
         }
     }
 
@@ -24,11 +28,12 @@ class AdminController extends BasicController {
         if ($this->app->request->getMethod() == 'POST') {
             $vars = $this->app->request->getBody();
 
-            $result = $user->findCedentials($vars['login']);
+            $result = $user->findCredentials($vars['login']);
 
             if (!empty($result)) {
                 if (password_verify($vars['pass'], $result[$vars['login']])) {
                     $this->app->session->saveData('isAdmin', true);
+                    $this->app->session->saveData('adminLogin', $vars['login']);
                 }
             }
             $this->app->response->redirect($this->app->router->getPath('admin'), 303);

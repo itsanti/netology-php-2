@@ -7,6 +7,14 @@ return [
         'password' => '',
         'database' => 'qa'
     ],
+    'extensions' => [
+        /*'logger' => [
+            'dateFormat' => 'Y-m-d H:i:s',
+            'output' => "[%datetime%] %channel% %message%\n",
+            'pathToLog' => '/logs/admin.log',
+            'className' => 'AdminLogger'
+        ]*/
+    ],
     'view' => [
         'templates' => '/Templates/',
         //'cache' => '/Templates/cache'
