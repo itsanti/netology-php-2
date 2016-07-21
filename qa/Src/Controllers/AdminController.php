@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Category;
 use App\Models\Question;
 use \App\Models\User;
+use App\Extensions\StopWords\StopWordModel;
 
 class AdminController extends BasicController {
 
@@ -174,6 +175,7 @@ class AdminController extends BasicController {
         $cat = null;
         $question = null;
         $vars = $this->app->request->getBody();
+        $words = [];
 
         $category = new Category();
 
@@ -207,19 +209,22 @@ class AdminController extends BasicController {
 
         if (!is_null($qid)) {
             $question = $question->findById($qid);
+            $words = \App\Extensions\StopWords\StopWord::getWords($question);
         }
 
         $this->app->response->setBody([
             'tpl' => 'admin/qedit.phtml',
             'categories' => $category->findAll(),
-            'question' => $question[0],
+            'question' => $question,
             'qid' => $qid,
             'cat' => $cat,
             'statuses' => [
                 Question::DRAFT => 'ожидает ответа',
                 Question::PUBLISHED => 'опубликован',
-                Question::HIDDEN => 'скрыт'
-            ]
+                Question::HIDDEN => 'скрыт',
+                Question::BLOCKED => 'заблокирован'
+            ],
+            'words' => $words
         ]);
         return $this->app->response->getBody($this->app->view);
     }
@@ -234,9 +239,64 @@ class AdminController extends BasicController {
         return $this->app->response->getBody($this->app->view);
     }
 
+    public function actionQuestionBList()
+    {
+        $questions = new Question();
+        $this->app->response->setBody([
+            'tpl' => 'admin/sw/swqlist.phtml',
+            'questions' => $questions->findAllBlocked()
+        ]);
+        return $this->app->response->getBody($this->app->view);
+    }
+
     public function actionAdminLogout()
     {
         $this->app->session->erase();
         $this->app->response->redirect($this->app->router->getPath('admin'), 303);
+    }
+
+    public function actionSWlist()
+    {
+        $sw = new StopWordModel();
+
+        $this->app->response->setBody([
+            'tpl' => 'admin/sw/swview.phtml',
+            'swords' => $sw->findAll(),
+        ]);
+        return $this->app->response->getBody($this->app->view);
+    }
+
+    public function actionSWnew()
+    {
+        if ($this->app->request->getMethod() == 'POST') {
+            $vars = $this->app->request->getBody();
+            $data = [
+                'word' => $vars['word']
+            ];
+            $sw = new StopWordModel();
+            $sw->addStopWord($data);
+            $this->app->response->redirect($this->app->router->getPath('sw/list'), 303);
+        }
+
+        $this->app->response->setBody([
+            'tpl' => 'admin/sw/swnew.phtml',
+        ]);
+        return $this->app->response->getBody($this->app->view);
+    }
+
+    public function actionSWdel()
+    {
+        $sw = new StopWordModel();
+
+        if ($this->app->request->getMethod() == 'POST') {
+            $vars = $this->app->request->getBody();
+            $sw->deleteStopWordById($vars['del']);
+        }
+
+        $this->app->response->setBody([
+            'tpl' => 'admin/sw/swdel.phtml',
+            'words' => $sw->findAll(),
+        ]);
+        return $this->app->response->getBody($this->app->view);
     }
 }

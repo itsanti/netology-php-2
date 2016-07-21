@@ -34,6 +34,10 @@ return [
         '/cat/del' => 'CatDel',
         '/cat/view' => 'CatView',
         '/q/edit' => 'QuestionEdit',
-        '/q/list' => 'QuestionList'
+        '/q/list' => 'QuestionList',
+        '/q/blist' => 'QuestionBList',
+        '/sw/list' => 'SWlist',
+        '/sw/new' => 'SWnew',
+        '/sw/del' => 'SWdel',
     ]
 ];

@@ -3,6 +3,14 @@
 {% block content %}
 {% if qid %}
 <p><a href="{{'cat/view'|buildHref({'cat': cat})}}">назад</a></p>
+{% if words %}
+<div style="padding: 10px 0;">
+    <h1>Вопрос заблокирован по словам:</h1>
+    <p>{% for word in words %}
+    [{{word}}]
+    {% endfor %}</p>
+</div>
+{% endif %}
 <form action="{{'q/edit'|buildHref}}" method="post" class="pure-form pure-form-aligned">
     <fieldset>
         <legend>Редактировать вопрос {{qid}} (дата публикации {{question.postdate|date('Y-m-d H:i:s')}})</legend>

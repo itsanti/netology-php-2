@@ -11,8 +11,10 @@
     {% endfor %}
 </ul> <!-- cd-faq-categories -->
 <div class="cd-faq-items">
-    <div>
-        <a href="{{'admin'|buildHref}}">{{ admin ? 'В админку' : 'Войти' }}</a>
+    <div class="pure-menu pure-menu-horizontal"><ul class="pure-menu-list">
+        <li class="pure-menu-item"><a class="pure-menu-link" href="{{'admin'|buildHref}}">{{ admin ? 'В админку' : 'Войти' }}</a></li>
+        <li class="pure-menu-item"><a class="pure-menu-link" href="{{'ask'|buildHref}}">Задать вопрос</a></li>
+        </ul>
     </div>
     {% for cat in cats %}
     <ul id="{{cat.slug}}" class="cd-faq-group">

@@ -15,9 +15,10 @@ class Category extends Model {
 
     public function getQuestionStat()
     {
-        $sql = 'select c.id, name, sum(if(status = 1, 1, 0)) as published, ' .
-               'sum(if(a is NULL and status is not NULL, 1, 0)) as noanswer, sum(if(status is NULL, 0, 1)) as total ' .
-               'from question as q right join category as c ON c.id = q.cat_id group by c.id order by c.id';
+        $sql = 'SELECT c.id, name, SUM(IF(status = '.Question::PUBLISHED.', 1, 0)) AS published, ' .
+               'SUM(IF(a IS NULL AND status IS NOT NULL AND status != '.Question::BLOCKED.', 1, 0)) AS noanswer, ' .
+               'SUM(IF(status IS NULL OR status = '.Question::BLOCKED.', 0, 1)) AS total ' .
+               'FROM question AS q RIGHT JOIN category AS c ON c.id = q.cat_id GROUP BY c.id ORDER BY c.id';
         $result = $this->app->db->query($sql);
         return $result->fetchAssoc('id');
     }

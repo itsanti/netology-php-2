@@ -33,6 +33,11 @@ class Controller extends BasicController {
                 'author_email' => $vars['ask']['email'],
                 'q' => $vars['ask']['question']
             ];
+
+            if (!\App\Extensions\StopWords\StopWord::isClean($data['q'])) {
+                $data['status'] = Question::BLOCKED;
+            }
+
             $question = new Question();
             $question->addQuestion($data);
             $this->app->response->redirect($this->app->router->getPath('Index'), 303);

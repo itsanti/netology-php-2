@@ -1,0 +1,21 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+{% if swords %}
+<h1>Список стоп слов на сайте</h1>
+<table class="pure-table pure-table-bordered">
+    <thead><tr>
+        <th>id</th>
+        <th>слово/шаблон</th>
+    </tr></thead>
+    {% for w in swords %}
+    <tbody><tr>
+        <td>{{w.id}}</td>
+        <td>{{w.word}}</td>
+    </tr></tbody>
+    {% endfor %}
+</table>
+{% else %}
+<p>В списке нет слов.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+{% if words %}
+<form action="{{'sw/del'|buildHref}}" method="post" class="pure-form pure-form-aligned">
+    <fieldset>
+        <legend>Удалить слово</legend>
+
+        <div class="pure-control-group">
+            <label for="words">Выбрать слово</label>
+            <select id="words" name="del">
+                {% for word in words %}
+                <option value="{{word.id}}">{{word.word}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="pure-controls">
+            <button type="submit" class="pure-button button-success">удалить</button>
+        </div>
+    </fieldset>
+</form>
+{% else %}
+<p>В списке нет слов.</p>
+{% endif %}
+{% endblock %}

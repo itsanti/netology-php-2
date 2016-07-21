@@ -75,6 +75,17 @@ class AdminLogger {
                     $msg = "обновил вопрос ({$this->params['q']}) из темы ({$this->params['cat']})";
                 }
                 break;
+            // stop words
+            case 'actionSWnew':
+                if (!empty($this->params['word'])) {
+                    $msg = "добавил слово \"{$this->params['word']}\"";
+                }
+                break;
+            case 'actionSWdel':
+                if (!empty($this->params['del'])) {
+                    $msg = "удалил слово ({$this->params['del']})";
+                }
+                break;
         }
         if ($msg) {
             $this->log->debug($msg);

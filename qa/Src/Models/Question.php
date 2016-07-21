@@ -8,6 +8,7 @@ class Question extends Model {
     const DRAFT = 0;
     const PUBLISHED = 1;
     const HIDDEN = 2;
+    const BLOCKED = 3;
 
     protected $tblname = 'question';
 
@@ -21,23 +22,38 @@ class Question extends Model {
     }
 
     public function findAllByCategory($id) {
-        $result = $this->app->db->query('SELECT * FROM [question] WHERE [cat_id] = %i ORDER BY [postdate] DESC', $id);
+        $result = $this->app->db->query('SELECT * FROM [question] WHERE %and ORDER BY [postdate] DESC', [
+            ['cat_id = %i', $id],
+            ['status != %i', self::BLOCKED]
+        ]);
         return $result->fetchAll();
     }
 
     public function findById($id)
     {
         $result = $this->app->db->query('SELECT * FROM [question] WHERE [id] = %i', $id);
+        $result = $result->fetchAll();
+        return $result[0];
+    }
+
+    public function findAllBlocked()
+    {
+        $sql =<<<SQL
+SELECT q.id AS qid, c.id AS cid, q.q, c.name, q.postdate
+FROM question AS q JOIN category AS c ON q.cat_id = c.id WHERE status = %i
+ORDER BY q.postdate
+SQL;
+        $result = $this->app->db->query($sql, self::BLOCKED);
         return $result->fetchAll();
     }
 
     public function findAllWithoutAnswer() {
         $sql =<<<SQL
 SELECT q.id AS qid, c.id AS cid, q.q, c.name, q.postdate
-FROM question AS q JOIN category AS c ON q.cat_id = c.id WHERE a IS NULL
+FROM question AS q JOIN category AS c ON q.cat_id = c.id WHERE a IS NULL AND status != %i
 ORDER BY q.postdate
 SQL;
-        $result = $this->app->db->query($sql);
+        $result = $this->app->db->query($sql, self::BLOCKED);
         return $result->fetchAll();
     }
 
