@@ -11,6 +11,7 @@
   "require": {
     "twig/twig":"~1.0",
     "dibi/dibi":"~3.0",
-    "monolog/monolog":"~1.20"
+    "monolog/monolog":"~1.20",
+    "irazasyed/telegram-bot-sdk":"~2.0"
   }
 }

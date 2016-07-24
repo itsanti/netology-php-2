@@ -14,6 +14,7 @@ class View {
         ));
         $filter = new \Twig_SimpleFilter('buildHref', array('\\App\\Router', 'buildHref'));
         $this->twig->addFilter($filter);
+        $this->addGlobal('root', $conf['root']);
     }
 
     public function addGlobal($var, $value)

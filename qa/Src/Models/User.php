@@ -19,6 +19,12 @@ class User extends Model {
         return $result->fetchPairs('login', 'password');
     }
 
+    public function checkLogin($login)
+    {
+        $result = $this->app->db->query('SELECT id FROM [user] WHERE [login] = %s', $login);
+        return $result->fetchSingle();
+    }
+
     public function addUser($data)
     {
         $this->app->db->query('INSERT INTO [user]', $data);

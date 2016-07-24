@@ -22,6 +22,7 @@ class Router {
 
     public function route($request)
     {
+        $args = [];
         $path = rtrim($request->getRequestTarget(), '/');
 
         $rbody = $request->getBody();
@@ -33,10 +34,11 @@ class Router {
             $method = 'action' . $this->routes[$path];
         } else {
             $method = 'action404';
+            $args = ['path' => $path];
         }
         if (method_exists('\\App\\Controllers\\Controller', $method)) {
             $ctrl = new Controllers\Controller($method);
-            return $ctrl->$method();
+            return call_user_func_array([$ctrl, $method], $args);
         }
         if (method_exists('\\App\\Controllers\\AdminController', $method)) {
             $ctrl = new Controllers\AdminController($method);
@@ -44,17 +46,13 @@ class Router {
                 $class = '\\App\\Extensions\\Loggers\\' . $this->extentions['logger']['className'];
                 $ctrl = new $class($ctrl, $this->extentions['logger']);
             }
-            return $ctrl->$method();
+            return call_user_func_array([$ctrl, $method], $args);
         }
         return 'Error';
     }
 
     public function getPath($name, $params = [])
     {
-        /*
-        if (self::$cleanUrl) {
-            return array_search($name, $this->routes);
-        }*/
         return self::buildHref($name, $params);
     }
 
@@ -65,8 +63,8 @@ class Router {
         }
         if (!empty($params)) {
             $params = http_build_query($params);
-            return (self::$cleanUrl) ? $route . '/?' . $params : '?r=' . $route . '&' . $params;
+            return (self::$cleanUrl) ? self::$path_root . '/' . $route . '/?' . $params : '?r=' . $route . '&' . $params;
         }
-        return (self::$cleanUrl) ? $route : '?r=' . $route;
+        return (self::$cleanUrl) ? self::$path_root . '/' . $route : '?r=' . $route;
     }
 }

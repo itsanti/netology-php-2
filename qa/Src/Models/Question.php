@@ -47,6 +47,15 @@ SQL;
         return $result->fetchAll();
     }
 
+    public function findFromBot()
+    {
+        $result = $this->app->db->query('SELECT * FROM [question] WHERE %and ORDER BY [postdate] DESC', [
+            ['bot_id %sql', 'IS NOT NULL'],
+            ['status != %i', self::BLOCKED]
+        ]);
+        return $result->fetchAll();
+    }
+
     public function findAllWithoutAnswer() {
         $sql =<<<SQL
 SELECT q.id AS qid, c.id AS cid, q.q, c.name, q.postdate

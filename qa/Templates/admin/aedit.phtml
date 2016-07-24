@@ -15,6 +15,15 @@
         </div>
 
         <div class="pure-control-group">
+            <label for="status">сатус на сайте</label>
+            <select id="status" name="edit[status]">
+                <option value="-1" selected>-- выбрать статус --</option>
+                <option value="0">отключен</option>
+                <option value="1">активен</option>
+            </select>
+        </div>
+
+        <div class="pure-control-group">
             <label for="password">новый пароль</label>
             <input id="password" type="text" name="edit[password]"
                    placeholder="пароль" required class="pure-input-1-2">

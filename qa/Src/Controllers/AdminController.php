@@ -4,8 +4,10 @@ namespace App\Controllers;
 
 use App\Models\Category;
 use App\Models\Question;
-use \App\Models\User;
+use App\Models\User;
 use App\Extensions\StopWords\StopWordModel;
+use App\Extensions\Telegram\TelegramBot;
+use App\Extensions\Telegram\TelegramModel;
 
 class AdminController extends BasicController {
 
@@ -56,6 +58,8 @@ class AdminController extends BasicController {
 
     public function actionAdminNew()
     {
+        $errors = [];
+
         if ($this->app->request->getMethod() == 'POST') {
             $vars = $this->app->request->getBody();
             $data = [
@@ -65,12 +69,17 @@ class AdminController extends BasicController {
                 'created_at' => time(),
             ];
             $user = new User();
-            $user->addUser($data);
-            $this->app->response->redirect($this->app->router->getPath('admin'), 303);
+            if (!$user->checkLogin($data['login'])) {
+                $user->addUser($data);
+                $this->app->response->redirect($this->app->router->getPath('admin'), 303);
+            } else {
+                $errors[] = 'Такой Администратор уже существует.';
+            }
         }
 
         $this->app->response->setBody([
             'tpl' => 'admin/anew.phtml',
+            'errors' => $errors
         ]);
         return $this->app->response->getBody($this->app->view);
     }
@@ -84,6 +93,9 @@ class AdminController extends BasicController {
             $data = [
                 'password' => password_hash($vars['edit']['password'], PASSWORD_DEFAULT)
             ];
+            if ($vars['edit']['status'] >= 0) {
+                $data['status'] = $vars['edit']['status'];
+            }
             $user->editUserById($vars['edit']['who'], $data);
             $this->app->response->redirect($this->app->router->getPath('admin'), 303);
         }
@@ -172,50 +184,77 @@ class AdminController extends BasicController {
     public function actionQuestionEdit()
     {
         $qid = null;
+        $bot_id = null;
         $cat = null;
-        $question = null;
-        $vars = $this->app->request->getBody();
         $words = [];
+        $questionData = [];
+        $vars = $this->app->request->getBody();
 
         $category = new Category();
 
         if (!empty($vars['q']) && is_numeric($vars['q'])) {
             $qid = $vars['q'];
             $question = new Question();
+            $questionData = $question->findById($qid);
+            $bot_id = $questionData['bot_id'];
+            $words = \App\Extensions\StopWords\StopWord::getWords($questionData['q']);
         }
 
         if (!empty($vars['cat']) && is_numeric($vars['cat'])) {
             $cat = $vars['cat'];
         }
 
-        if ($this->app->request->getMethod() == 'POST') {
+        if ($this->app->request->getMethod() == 'POST' && !empty($qid)) {
             if (isset($vars['del'])) {
                 $question->deleteQuestion($qid);
+                if ($bot_id) {
+                    $telModel = new TelegramModel();
+                    $telModel->deleteQuestion($bot_id);
+                    $this->app->response->redirect($this->app->router->getPath('q/bot'), 303);
+                }
                 $this->app->response->redirect($this->app->router->getPath('cat/view', ['cat' => $cat]), 303);
             }
             if (isset($vars['e'])) {
+
+                $redirect = ['q' => $vars['q']];
+                $hasCategory = !empty($vars['edit']['category']);
+
+                if ($hasCategory) {
+                    $redirect['cat'] = $vars['edit']['category'];
+                }
+
+                if (!empty($vars['edit']['a']) && $bot_id) {
+                    $telegram = new TelegramBot($this->app->config['extensions']['telegram']);
+                    $telModel = new TelegramModel();
+                    $params = $telModel->findById($bot_id);
+                    $params['text'] = $vars['edit']['a'];
+                    try {
+                        $telegram->sendAnswer($params);
+                    } catch (\Exception $e) {
+                        $vars['edit']['status'] = Question::DRAFT;
+                        $vars['edit']['a'] = "[сбой отпарвки]\n" . $vars['edit']['a'];
+                    }
+                }
+
                 $data = [
-                    'cat_id' => $vars['edit']['category'],
-                    'status' => $vars['edit']['status'],
+                    'cat_id' => $hasCategory ? $vars['edit']['category'] : NULL,
                     'author_name' => $vars['edit']['author_name'],
                     'author_email' => $vars['edit']['author_email'],
                     'q' => $vars['edit']['q'],
-                    'a' => $vars['edit']['a']
+                    'a' => $vars['edit']['a'],
+                    'status' => $vars['edit']['status']
                 ];
-                $question->editQuestionById($vars['q'], $data);
-                $this->app->response->redirect($this->app->router->getPath('q/edit', ['q' => $vars['q'],'cat' => $vars['edit']['category']]), 303);
-            }
-        }
 
-        if (!is_null($qid)) {
-            $question = $question->findById($qid);
-            $words = \App\Extensions\StopWords\StopWord::getWords($question);
+                $question->editQuestionById($vars['q'], $data);
+
+                $this->app->response->redirect($this->app->router->getPath('q/edit', $redirect), 303);
+            }
         }
 
         $this->app->response->setBody([
             'tpl' => 'admin/qedit.phtml',
             'categories' => $category->findAll(),
-            'question' => $question,
+            'question' => $questionData,
             'qid' => $qid,
             'cat' => $cat,
             'statuses' => [
@@ -245,6 +284,44 @@ class AdminController extends BasicController {
         $this->app->response->setBody([
             'tpl' => 'admin/sw/swqlist.phtml',
             'questions' => $questions->findAllBlocked()
+        ]);
+        return $this->app->response->getBody($this->app->view);
+    }
+
+    public function actionQuestionBot()
+    {
+        $questions = new Question();
+
+        $telegram = new TelegramBot($this->app->config['extensions']['telegram']);
+
+        if (!empty($telegram->getUpdates())) {
+            try {
+                $qFromTelegram = $telegram->processUpdates();
+            } catch (\Exception $e) {
+                $qFromTelegram = [];
+            }
+
+
+            if (!empty($qFromTelegram)) {
+                foreach ($qFromTelegram as $question) {
+                    if (empty($question['q'])) {
+                        continue;
+                    }
+                    $telModel = new TelegramModel();
+                    $bot_id = $telModel->addQuestion([
+                        'chat_id' => $question['chat_id'],
+                        'msg_id'  => $question['msg_id']
+                    ]);
+                    unset($question['chat_id'], $question['msg_id']);
+                    $question['bot_id'] = $bot_id;
+                    $questions->addQuestion($question);
+                }
+            }
+        }
+
+        $this->app->response->setBody([
+            'tpl' => 'admin/botqlist.phtml',
+            'questions' => $questions->findFromBot()
         ]);
         return $this->app->response->getBody($this->app->view);
     }

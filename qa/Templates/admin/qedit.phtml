@@ -2,7 +2,11 @@
 
 {% block content %}
 {% if qid %}
+{% if cat %}
 <p><a href="{{'cat/view'|buildHref({'cat': cat})}}">назад</a></p>
+{% else %}
+<p><a href="{{'q/bot'|buildHref}}">назад</a></p>
+{% endif %}
 {% if words %}
 <div style="padding: 10px 0;">
     <h1>Вопрос заблокирован по словам:</h1>
@@ -14,7 +18,7 @@
 <form action="{{'q/edit'|buildHref}}" method="post" class="pure-form pure-form-aligned">
     <fieldset>
         <legend>Редактировать вопрос {{qid}} (дата публикации {{question.postdate|date('Y-m-d H:i:s')}})</legend>
-
+        {% if cat is not empty %}
         <div class="pure-control-group">
             <label for="category">Категория</label>
             <select id="category" name="edit[category]">
@@ -23,6 +27,7 @@
                 {% endfor %}
             </select>
         </div>
+        {% endif %}
 
         <div class="pure-control-group">
             <label for="status">Статус</label>

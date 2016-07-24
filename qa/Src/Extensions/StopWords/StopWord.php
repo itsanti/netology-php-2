@@ -30,7 +30,7 @@ class StopWord {
 
     public static function getWords($question)
     {
-        return self::search($question->q);
+        return self::search($question);
     }
 
 }

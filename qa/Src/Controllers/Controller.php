@@ -50,8 +50,13 @@ class Controller extends BasicController {
         return $this->app->response->getBody($this->app->view);
     }
 
-    public function action404()
+    public function action404($path)
     {
-        return '404';
+        $this->app->response->notFound();
+        $this->app->response->setBody([
+            'tpl' => '404.phtml',
+            'path' => $path
+        ]);
+        return $this->app->response->getBody($this->app->view);
     }
 }

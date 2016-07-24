@@ -50,16 +50,16 @@ abstract class Response {
         }
     }
 
-    /**
-     * Вспомогательный метод для перенаправления.
-     *
-     * @param string $path путь для перенаправления
-     * @param int $status код ответа
-     */
     public function redirect($path, $status)
     {
         $this->setHeader('Location', $path);
         $this->sendHeaders($status);
         exit;
+    }
+
+    public function notFound()
+    {
+        //need nginx setup
+        http_response_code(404);
     }
 }

@@ -1,0 +1,27 @@
+{% extends 'alayout.phtml' %}
+
+{% block content %}
+{% if questions %}
+{% set status = ['ожидает ответа', 'опубликован', 'скрыт'] %}
+<table class="pure-table pure-table-bordered">
+    <thead><tr>
+        <th>id</th>
+        <th>вопрос</th>
+        <th>статус</th>
+        <th>дата публикации</th>
+        <th>редактировать вопрос</th>
+    </tr></thead>
+    {% for question in questions %}
+    <tbody><tr>
+        <td>{{question.id}}</td>
+        <td>{{question.q}}</td>
+        <td>{{status[question.status]}}</td>
+        <td>{{question.postdate|date('Y-m-d H:i:s')}}</td>
+        <td><a class="pure-button" href="{{'q/edit'|buildHref({'q': question.id})}}">редактировать</a></td>
+    </tr></tbody>
+    {% endfor %}
+</table>
+{% else %}
+<p>Нет вопросов из Telegram.</p>
+{% endif %}
+{% endblock %}
