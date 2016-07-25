@@ -4,6 +4,13 @@ namespace App\Extensions\StopWords;
 
 class StopWord {
 
+    /**
+     * Функция реализует механизм поиска слов.
+     *
+     * @param $q
+     *
+     * @return array
+     */
     private static function search($q)
     {
         $sw = new StopWordModel();
@@ -23,11 +30,25 @@ class StopWord {
         return [];
     }
 
+    /**
+     * Функция проверки вопроса на наличие стопслов.
+     *
+     * @param $question
+     *
+     * @return bool
+     */
     public static function isClean($question)
     {
         return empty(self::search($question));
     }
 
+    /**
+     * Функия возвращает массив слов за которые был заблокирован вопрос.
+     *
+     * @param $question
+     *
+     * @return array
+     */
     public static function getWords($question)
     {
         return self::search($question);

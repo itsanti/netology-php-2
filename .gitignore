@@ -4,3 +4,4 @@ dump/
 cache/
 tmp/
 composer.phar
+qa/conf.php
