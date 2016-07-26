@@ -33,7 +33,7 @@ class Question extends Model {
     {
         $result = $this->app->db->query('SELECT * FROM [question] WHERE [id] = %i', $id);
         $result = $result->fetchAll();
-        return $result[0];
+        return !empty($result)? $result[0] : null;
     }
 
     public function findAllBlocked()

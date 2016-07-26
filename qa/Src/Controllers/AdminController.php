@@ -196,8 +196,12 @@ class AdminController extends BasicController {
             $qid = $vars['q'];
             $question = new Question();
             $questionData = $question->findById($qid);
-            $bot_id = $questionData['bot_id'];
-            $words = \App\Extensions\StopWords\StopWord::getWords($questionData['q']);
+            if (!is_null($questionData)) {
+                $bot_id = $questionData['bot_id'];
+                $words = \App\Extensions\StopWords\StopWord::getWords($questionData['q']);
+            } else {
+                $this->app->response->redirect($this->app->router->getPath('cat/view', ['cat' => $cat]), 303);
+            }
         }
 
         if (!empty($vars['cat']) && is_numeric($vars['cat'])) {
@@ -227,8 +231,12 @@ class AdminController extends BasicController {
                     $telegram = new TelegramBot($this->app->config['extensions']['telegram']);
                     $telModel = new TelegramModel();
                     $params = $telModel->findById($bot_id);
-                    $params['text'] = $vars['edit']['a'];
                     try {
+                        if (!is_null($params)) {
+                            $params['text'] = $vars['edit']['a'];
+                        } else {
+                            throw new \Telegram\Bot\Exceptions\TelegramSDKException('Record with $bot_id = ' . $bot_id . 'not found');
+                        }
                         $telegram->sendAnswer($params);
                     } catch (\Exception $e) {
                         $vars['edit']['status'] = Question::DRAFT;

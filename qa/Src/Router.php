@@ -4,6 +4,8 @@ namespace App;
 
 class Router {
 
+    const ROUTE_PARAM = 'r';
+
     protected $routes = [];
     protected $extentions;
     protected static $cleanUrl = false;
@@ -26,8 +28,8 @@ class Router {
         $path = rtrim($request->getRequestTarget(), '/');
 
         $rbody = $request->getBody();
-        if (array_key_exists('r', $rbody)) {
-            $path .= '/' . $rbody['r'];
+        if (array_key_exists(self::ROUTE_PARAM, $rbody)) {
+            $path .= '/' . $rbody[self::ROUTE_PARAM];
         }
 
         if (array_key_exists($path, $this->routes)) {
@@ -63,8 +65,8 @@ class Router {
         }
         if (!empty($params)) {
             $params = http_build_query($params);
-            return (self::$cleanUrl) ? self::$path_root . '/' . $route . '/?' . $params : '?r=' . $route . '&' . $params;
+            return (self::$cleanUrl) ? self::$path_root . '/' . $route . '/?' . $params : '?'.self::ROUTE_PARAM.'=' . $route . '&' . $params;
         }
-        return (self::$cleanUrl) ? self::$path_root . '/' . $route : '?r=' . $route;
+        return (self::$cleanUrl) ? self::$path_root . '/' . $route : '?'.self::ROUTE_PARAM.'=' . $route;
     }
 }

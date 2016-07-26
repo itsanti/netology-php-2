@@ -12,10 +12,16 @@ jQuery(document).ready(function($){
 	
 	//select a faq section 
 	faqsCategories.on('click', function(event){
-		event.preventDefault();
+        var noA = $(this).data('noa');
+        if (noA == 'noa') {
+            return true;
+        } else {
+            event.preventDefault();
+        }
+
 		var selectedHref = $(this).attr('href'),
 			target= $(selectedHref);
-		if( $(window).width() < MqM) {
+        if( $(window).width() < MqM) {
 			faqsContainer.scrollTop(0).addClass('slide-in').children('ul').removeClass('selected').end().children(selectedHref).addClass('selected');
 			closeFaqsContainer.addClass('move-left');
 			$('body').addClass('cd-overlay');

@@ -13,6 +13,7 @@ abstract class Request {
             case 'application/json':
                 return new RequestJson();
             case 'application/x-www-form-urlencoded':
+            case 'multipart/form-data':
             default:
                 return new RequestHtml();
         }
@@ -40,7 +41,7 @@ abstract class Request {
 
     public function __toString() {
         if ($pos = strrpos(static::class, '\\')) return substr(static::class, $pos + 1);
-        return $pos;
+        return static::class;
     }
 
     public function checkAccess()

@@ -2,16 +2,13 @@
 
 {% block content %}
 <ul class="cd-faq-categories">
+    <li><a class="selected" href="#login">Войти/Задать вопрос</a></li>
     {% for cat in cats %}
-    {% if loop.first %}
-    <li><a class="selected" href="#{{cat.slug}}">{{cat.name}}</a></li>
-    {% else %}
     <li><a href="#{{cat.slug}}">{{cat.name}}</a></li>
-    {% endif %}
     {% endfor %}
 </ul> <!-- cd-faq-categories -->
 <div class="cd-faq-items">
-    <div class="pure-menu pure-menu-horizontal"><ul class="pure-menu-list">
+    <div id="login" class="pure-menu pure-menu-horizontal"><ul class="pure-menu-list">
         <li class="pure-menu-item"><a class="pure-menu-link" href="{{'admin'|buildHref}}">{{ admin ? 'В админку' : 'Войти' }}</a></li>
         <li class="pure-menu-item"><a class="pure-menu-link" href="{{'ask'|buildHref}}">Задать вопрос</a></li>
         </ul>

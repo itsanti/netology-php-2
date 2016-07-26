@@ -30,6 +30,7 @@ class Application
     {
         $this->config = include APP_ROOT . '/conf.php';
         $this->db = \App\Db\Connection::getConnection($this->config['db']);
+        $this->session = new \App\Storages\Session();
         $this->view = new \App\Html\View($this->config['view']);
         $this->request = $request;
         $this->response = $response;

@@ -20,33 +20,42 @@
     {% if admin %}
     <ul class="cd-faq-categories">
         <li>Администраторы</li>
-        <li><a href="{{'admin'|buildHref}}">Список Администраторов</a></li>
-        <li><a href="{{'admin/new'|buildHref}}">Создать администратора</a></li>
-        <li><a href="{{'admin/edit'|buildHref}}">Редактировать администратора</a></li>
-        <li><a href="{{'admin/del'|buildHref}}">Удалить администратора</a></li>
+        <li><a href="{{'admin'|buildHref}}" data-noa="noa">Список Администраторов</a></li>
+        <li><a href="{{'admin/new'|buildHref}}" data-noa="noa">Создать администратора</a></li>
+        <li><a href="{{'admin/edit'|buildHref}}" data-noa="noa">Редактировать администратора</a></li>
+        <li><a href="{{'admin/del'|buildHref}}" data-noa="noa">Удалить администратора</a></li>
         <li>Категории</li>
-        <li><a href="{{'cat/new'|buildHref}}">Создать тему</a></li>
-        <li><a href="{{'cat/del'|buildHref}}">Удалить тему</a></li>
+        <li><a href="{{'cat/new'|buildHref}}" data-noa="noa">Создать тему</a></li>
+        <li><a href="{{'cat/del'|buildHref}}" data-noa="noa">Удалить тему</a></li>
         <li>Вопросы</li>
-        <li><a href="{{'ask'|buildHref}}">Задать вопрос</a></li>
-        <li><a href="{{'cat/view'|buildHref}}">Редактировать вопросы</a></li>
-        <li><a href="{{'q/list'|buildHref}}">Список без ответов</a></li>
-        <li><a href="{{'q/blist'|buildHref}}">Заблокированные</a></li>
-        <li><a href="{{'q/bot'|buildHref}}">Вопросы Telegram</a></li>
+        <li><a href="{{'ask'|buildHref}}" data-noa="noa">Задать вопрос</a></li>
+        <li><a href="{{'cat/view'|buildHref}}" data-noa="noa">Редактировать вопросы</a></li>
+        <li><a href="{{'q/list'|buildHref}}" data-noa="noa">Список без ответов</a></li>
+        <li><a href="{{'q/blist'|buildHref}}" data-noa="noa">Заблокированные</a></li>
+        <li><a href="{{'q/bot'|buildHref}}" data-noa="noa">Вопросы Telegram</a></li>
         <li>Стопслова</li>
-        <li><a href="{{'sw/list'|buildHref}}">Список слов</a></li>
-        <li><a href="{{'sw/new'|buildHref}}">Добавить слово</a></li>
-        <li><a href="{{'sw/del'|buildHref}}">Удалить слово</a></li>
+        <li><a href="{{'sw/list'|buildHref}}" data-noa="noa">Список слов</a></li>
+        <li><a href="{{'sw/new'|buildHref}}" data-noa="noa">Добавить слово</a></li>
+        <li><a href="{{'sw/del'|buildHref}}" data-noa="noa">Удалить слово</a></li>
         <li>Аккаунт</li>
-        <li><a href="{{'Index'|buildHref}}">На главную</a></li>
-        <li><a href="{{'admin/logout'|buildHref}}">Выйти</a></li>
+        <li><a href="{{'Index'|buildHref}}" data-noa="noa">На главную</a></li>
+        <li><a href="{{'admin/logout'|buildHref}}" data-noa="noa">Выйти</a></li>
     </ul> <!-- cd-faq-categories -->
+    {% else %}
+    <ul class="cd-faq-categories">
+        <li><a href="#">Войти</a></li>
+        <li><a href="{{'Index'|buildHref}}" data-noa="noa">На главную</a></li>
+    </ul>
     {% endif %}
     <div class="cd-faq-items">
     {% block content %}{% endblock %}
+    <a href="#0" class="cd-close-panel">Close</a>
     </div>
 </section> <!-- cd-faq -->
 <script src="{{root}}/assets/js/jquery-2.1.1.js"></script>
 <script src="{{root}}/assets/js/jquery.mobile.custom.min.js"></script>
+{% if not admin %}
+<script src="{{root}}/assets/js/main.js"></script> <!-- Resource jQuery -->
+{% endif %}
 </body>
 </html>
