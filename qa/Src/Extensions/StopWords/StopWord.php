@@ -22,7 +22,7 @@ class StopWord {
 
         $patterns_flattened = implode('|', $words);
 
-        if (preg_match_all("~{$patterns_flattened}~", $q, $matches))
+        if (preg_match_all("~{$patterns_flattened}~i", $q, $matches))
         {
             return $matches[0];
         }

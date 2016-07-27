@@ -39,12 +39,15 @@
     {% endfor %}
 </table>
 {% else %}
+{% if error %}
+<div class="error">{{error}}</div>
+{% endif %}
 <form action="{{'admin'|buildHref}}" method="post" class="pure-form pure-form-stacked">
     <fieldset>
         <legend>Привет, Гость. Войдите в систему для администрирования.</legend>
 
         <label for="login">Логин / Имя</label>
-        <input type="text" id="login" name="login" required placeholder="login">
+        <input type="text" id="login" name="login" required placeholder="login" value="{{login}}">
 
         <label for="pass">Пароль</label>
         <input type="password" id="pass" name="pass" placeholder="password">

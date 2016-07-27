@@ -40,8 +40,8 @@ abstract class Request {
     }
 
     public function __toString() {
-        if ($pos = strrpos(static::class, '\\')) return substr(static::class, $pos + 1);
-        return static::class;
+        $name = explode('\\', static::class);
+        return end($name);
     }
 
     public function checkAccess()

@@ -7,6 +7,11 @@ class Application
 
     public $db;
     public $config = [];
+    public $session;
+    public $view;
+    public $request;
+    public $response;
+    public $router;
 
     protected function __construct()
     {

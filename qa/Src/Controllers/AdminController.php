@@ -27,6 +27,8 @@ class AdminController extends BasicController {
     {
         $user = new User();
         $category = new Category();
+        $error = $this->app->session->loadData('error', true);
+        $login = $this->app->session->loadData('login', true);;
 
         if ($this->app->request->getMethod() == 'POST') {
             $vars = $this->app->request->getBody();
@@ -37,13 +39,20 @@ class AdminController extends BasicController {
                 if (password_verify($vars['pass'], $result[$vars['login']])) {
                     $this->app->session->saveData('isAdmin', true);
                     $this->app->session->saveData('adminLogin', $vars['login']);
+                } else {
+                    $this->app->session->saveData('error', 'Неверный пароль или он был изменен.');
+                    $this->app->session->saveData('login', $vars['login']);
                 }
+            } else {
+                $this->app->session->saveData('error', 'Пользователь не найден или заблокирован.');
             }
             $this->app->response->redirect($this->app->router->getPath('admin'), 303);
         }
 
         $tplvars = [
             'tpl' => 'admin/index.phtml',
+            'error' => $error,
+            'login' => $login
         ];
 
         if ($this->isAdmin) {

@@ -74,7 +74,7 @@ SQL;
     public function editQuestionById($id, $data)
     {
         if (empty($data['a'])) {
-            unset($data['a']);
+            $data['a'] = null;
         }
         $this->app->db->query('UPDATE [question] SET ', $data, 'WHERE [id] = %i LIMIT 1', $id);
     }
